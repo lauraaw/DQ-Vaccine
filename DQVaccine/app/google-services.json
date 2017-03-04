@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "524971526521",
+    "project_id": "dqvaccine"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524971526521:android:51d385ad94d5d034",
+        "android_client_info": {
+          "package_name": "com.dq.dqvaccine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524971526521-9je2h1kh4psn1t3ult2h9bdta3jec9m0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dq.dqvaccine",
+            "certificate_hash": "20edda047a993cd9023293315304411ed37b66ad"
+          }
+        },
+        {
+          "client_id": "524971526521-ibcrjkca5ntjagj7eef7lvnhfuc783aa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByf5-tFIXu5qJihiKU3kaNSuMusuDOC5Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
