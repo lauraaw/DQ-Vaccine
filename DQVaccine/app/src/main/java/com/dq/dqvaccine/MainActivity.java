@@ -1,11 +1,9 @@
 package com.dq.dqvaccine;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.TextureView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,10 +12,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-
 import com.google.android.gms.auth.api.Auth;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+
+public class MainActivity extends AppCompatActivity implements
+        GoogleApiClient.OnConnectionFailedListener,
+        View.OnClickListener {
 
     private GoogleApiClient client;
     private static final String TAG = "InicioSesion";
@@ -101,5 +101,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             findViewById(R.id.title_text).setVisibility(View.VISIBLE);
         }
     }
+
 }
 

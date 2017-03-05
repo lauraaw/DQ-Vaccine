@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "524971526521",
-    "project_id": "dqvaccine"
+    "project_number": "506947740846",
+    "project_id": "firebase-dqvaccine"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:524971526521:android:51d385ad94d5d034",
+        "mobilesdk_app_id": "1:506947740846:android:51d385ad94d5d034",
         "android_client_info": {
           "package_name": "com.dq.dqvaccine"
         }
       },
       "oauth_client": [
         {
-          "client_id": "524971526521-9je2h1kh4psn1t3ult2h9bdta3jec9m0.apps.googleusercontent.com",
+          "client_id": "506947740846-tr9l7hm3qlc9bubrmmekdhc21vmeukte.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "506947740846-jrcc4d18gr590o3dkephle8rv0242v3p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.dq.dqvaccine",
-            "certificate_hash": "20edda047a993cd9023293315304411ed37b66ad"
+            "certificate_hash": "c1055872af602f244bcb8d37195ec5b42df1542b"
           }
-        },
-        {
-          "client_id": "524971526521-ibcrjkca5ntjagj7eef7lvnhfuc783aa.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyByf5-tFIXu5qJihiKU3kaNSuMusuDOC5Q"
+          "current_key": "AIzaSyC1xs017RGz8ozjLYDjnZNGsBodzcVNqi4"
         }
       ],
       "services": {
