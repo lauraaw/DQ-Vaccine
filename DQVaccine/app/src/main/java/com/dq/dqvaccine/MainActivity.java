@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        VistaEstado = (TextView) findViewById(R.id.title_text);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -54,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 signIn();
                 break;
             //case R.id.sign_out_button:
-              //  signOut();
-                //break;
+            //  signOut();
+            //break;
 
         }
     }
@@ -100,3 +101,4 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 }
+
