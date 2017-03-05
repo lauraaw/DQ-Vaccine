@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DQVaccine</string>
+    <string name="usuario"> Usuario: \n %s \n %s </string>
 </resources>
