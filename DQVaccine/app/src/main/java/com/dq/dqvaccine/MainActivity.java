@@ -2,10 +2,12 @@ package com.dq.dqvaccine;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements
     private static final String TAG = "InicioSesion";
     private static final int RC_SIGN_IN = 9001;
     private TextView VistaEstado;
+    private ImageView VistaFoto;
     private ProgressDialog mProgressDialog;
 
     @Override
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         VistaEstado = (TextView) findViewById(R.id.title_text);
+        VistaFoto = (ImageView) findViewById(R.id.profile_pic);
 
         //Listeners de Botones
         findViewById(R.id.sign_in_button).setOnClickListener(this);
@@ -104,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             VistaEstado.setText(getString(R.string.usuario, acct.getDisplayName(), acct.getEmail()));
+            new DownloadImageTask(VistaFoto).execute(acct.getPhotoUrl().toString());
             updateUI(true);
         } else {
             // Signed out, show unauthenticated UI.
@@ -117,12 +122,14 @@ public class MainActivity extends AppCompatActivity implements
             findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
             findViewById(R.id.confirm_button).setVisibility(View.VISIBLE);
             findViewById(R.id.title_text).setVisibility(View.VISIBLE);
+            findViewById(R.id.profile_pic).setVisibility(View.VISIBLE);
         }
         else {
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_button).setVisibility(View.GONE);
             findViewById(R.id.confirm_button).setVisibility(View.GONE);
             findViewById(R.id.title_text).setVisibility(View.GONE);
+            findViewById(R.id.profile_pic).setVisibility(View.GONE);
         }
     }
 
@@ -169,4 +176,3 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 }
-
