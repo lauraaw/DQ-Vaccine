@@ -30,6 +30,14 @@ public class HijosDetalleFragment extends Fragment {
     private TextView mCedula;
     private TextView mFechaNac;
     private TextView mSexo;
+    private TextView mLugarNac;
+    private TextView mNacionalidad;
+    private TextView mDepartamento;
+    private TextView mMunicipio;
+    private TextView mBarrio;
+    private TextView mDireccion;
+    private TextView mAlergias;
+
 
     private DQbdHelper mDQbdHelper;
 
@@ -65,6 +73,13 @@ public class HijosDetalleFragment extends Fragment {
         mCedula = (TextView) root.findViewById(R.id.tv_cedula);
         mFechaNac = (TextView) root.findViewById(R.id.tv_fecha_nac);
         mSexo = (TextView) root.findViewById(R.id.tv_sexo);
+        mLugarNac = (TextView) root.findViewById(R.id.tv_lugar_nac);
+        mNacionalidad = (TextView) root.findViewById(R.id.tv_nac);
+        mDepartamento = (TextView) root.findViewById(R.id.tv_departamento);
+        mMunicipio = (TextView) root.findViewById(R.id.tv_municipio);
+        mBarrio = (TextView) root.findViewById(R.id.tv_barrio);
+        mDireccion = (TextView) root.findViewById(R.id.tv_direccion);
+        mAlergias = (TextView) root.findViewById(R.id.tv_alergia);
 
         mDQbdHelper = new DQbdHelper(getActivity());
 
@@ -83,14 +98,23 @@ public class HijosDetalleFragment extends Fragment {
     }
 
     private void showLawyer(Hijo hijo) {
-        mCollapsingView.setTitle(hijo.getNombre() + " " + hijo.getApellido());
+        String nombre = hijo.getNombre() + " " + hijo.getApellido();
+        mCollapsingView.setTitle(nombre);
         Glide.with(this)
                 .load(Uri.parse("file:///android_asset/" + ""))
                 .centerCrop()
                 .into(mAvatar);
-        mCedula.setText(hijo.getCi());
+        System.out.println(nombre);
+        mCedula.setText(String.valueOf(hijo.getCi()));
         mFechaNac.setText(hijo.getFecha_nac());
         mSexo.setText(hijo.getSexo());
+        mLugarNac.setText(hijo.getLugar_nac());
+        mNacionalidad.setText(hijo.getNacionalidad());
+        mDepartamento.setText(hijo.getDepartamento());
+        mMunicipio.setText(hijo.getMunicipio());
+        mBarrio.setText(hijo.getBarrio());
+        mDireccion.setText(hijo.getDireccion());
+        mAlergias.setText(hijo.getAlergias());
     }
 
     private void showLoadError() {
