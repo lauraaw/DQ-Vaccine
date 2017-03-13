@@ -20,7 +20,7 @@ public class DQbdHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS" + HijosEntry.TABLE_NAME + " ("
+        db.execSQL("CREATE TABLE " + HijosEntry.TABLE_NAME + " ("
                 + HijosEntry._ID + " INTEGER PRIMARY KEY,"
                 + HijosEntry.ID + " INTEGER NOT NULL,"
                 + HijosEntry.CI + " INTEGER NOT NULL,"

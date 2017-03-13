@@ -42,7 +42,7 @@ public class HijosCursorAdapter extends CursorAdapter{
         // Get valores.
         String name = cursor.getString(cursor.getColumnIndex(HijosEntry.NOMBRE))
                 + " " + cursor.getString(cursor.getColumnIndex(HijosEntry.APELLIDO));
-        String avatarUri = "";
+        String avatarUri = ""; //No tenemos en la bd
 
         // Setup.
         nameText.setText(name);
