@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dq.dqvaccine.activities.HijosActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -69,8 +70,14 @@ public class MainActivity extends AppCompatActivity implements
                 signOut();
                 break;
             case R.id.confirm_button:
+                confirm();
                 break;
         }
+    }
+
+    private void confirm() {
+        Intent confint = new Intent(this, HijosActivity.class);
+        startActivity(confint);
     }
 
     private void signOut() {

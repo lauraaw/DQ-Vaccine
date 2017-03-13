@@ -2,4 +2,7 @@
     <string name="app_name">DQVaccine</string>
     <string name="usuario" formatted="false">Usuario: \n%1$s \n%2$s </string>
     <string name="loading">Loading…</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
