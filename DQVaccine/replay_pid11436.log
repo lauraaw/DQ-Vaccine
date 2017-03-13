@@ -1,0 +1,13 @@
+JvmtiExport can_access_local_variables 0
+JvmtiExport can_hotswap_or_post_breakpoint 0
+JvmtiExport can_post_on_exceptions 0
+# 355 ciObject found
+ciMethod java/lang/RuntimeException <init> (Ljava/lang/String;Ljava/lang/Throwable;)V 0 0 1 0 -1
+ciMethod java/lang/NullPointerException <init> (Ljava/lang/String;)V 0 0 1 0 -1
+ciMethod java/util/ArrayList ensureCapacityInternal (I)V 417 1 2311493 0 -1
+ciMethod java/util/ArrayList ensureExplicitCapacity (I)V 417 1 2304199 0 -1
+ciMethod java/util/ArrayList grow (I)V 113 1 5144 0 -1
+ciMethod java/util/ArrayList add (Ljava/lang/Object;)Z 409 1 2299635 0 -1
+ciMethod java/lang/Math max (II)I 497 1 552377 0 -1
+ciMethod java/lang/IllegalArgumentException <init> (Ljava/lang/String;)V 0 0 185 0 -1
+ciMethod 

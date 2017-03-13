@@ -114,7 +114,9 @@ public class HijosDetalleFragment extends Fragment {
         mMunicipio.setText(hijo.getMunicipio());
         mBarrio.setText(hijo.getBarrio());
         mDireccion.setText(hijo.getDireccion());
-        mAlergias.setText(hijo.getAlergias());
+        if (hijo.getAlergias() != null){
+            mAlergias.setText(hijo.getAlergias());
+        }
     }
 
     private void showLoadError() {

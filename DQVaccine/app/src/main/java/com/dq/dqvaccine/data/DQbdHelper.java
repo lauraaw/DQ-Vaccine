@@ -83,7 +83,7 @@ public class DQbdHelper extends SQLiteOpenHelper {
         Cursor c = getReadableDatabase().query(
                 HijosEntry.TABLE_NAME,
                 null,
-                HijosEntry.ID + " = ",
+                HijosEntry.ID + " = ?",
                 new String[]{hijoId},
                 null,
                 null,
