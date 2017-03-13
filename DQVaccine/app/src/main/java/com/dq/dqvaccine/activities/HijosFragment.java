@@ -12,6 +12,7 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.dq.dqvaccine.R;
@@ -54,6 +55,20 @@ public class HijosFragment extends Fragment {
         );*/
         mHijosList.setAdapter(mHijosAdapter);
 
+        mHijosList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Cursor currentItem = (Cursor) mHijosAdapter.getItem(i);
+                int currentHijoId = currentItem.getInt(
+                        currentItem.getColumnIndex(HijosEntry.ID));
+                System.out.println(currentHijoId);
+                showDetailScreen(currentHijoId);
+            }
+        });
+
+
+        getActivity().deleteDatabase(DQbdHelper.DATABASE_NAME);
+
         mDQbdHelper = new DQbdHelper(getActivity());
         /*SQLiteDatabase db = mDQbdHelper.getWritableDatabase();
         mDQbdHelper.insertarDatos(db);*/
@@ -61,6 +76,13 @@ public class HijosFragment extends Fragment {
         loadHijos();
         return root;
     }
+
+    private void showDetailScreen(int currentHijoId) {
+        Intent intent = new Intent(getActivity(), HijosDetalleActivity.class);
+        intent.putExtra(HijosActivity.EXTRA_HIJO_ID, currentHijoId);
+        startActivity(intent);
+    }
+
 
     private void loadHijos() {
         new HijosLoadTask().execute();

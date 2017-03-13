@@ -1,6 +1,7 @@
 package com.dq.dqvaccine.clases;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import com.dq.dqvaccine.data.DQContract.HijosEntry;
 
@@ -55,6 +56,26 @@ public class Hijo {
         this.tel = tel;
         this.seguro = seguro;
         this.alergias = alergias;
+    }
+
+    public Hijo(Cursor cursor) {
+        id = cursor.getInt(cursor.getColumnIndex(HijosEntry.ID));
+        ci = cursor.getInt(cursor.getColumnIndex(HijosEntry.CI));
+        nombre = cursor.getString(cursor.getColumnIndex(HijosEntry.NOMBRE));
+        apellido = cursor.getString(cursor.getColumnIndex(HijosEntry.APELLIDO));
+        fecha_nac = cursor.getString(cursor.getColumnIndex(HijosEntry.FECHA_NAC));
+        lugar_nac = cursor.getString(cursor.getColumnIndex(HijosEntry.LUGAR_NAC));
+        sexo = cursor.getString(cursor.getColumnIndex(HijosEntry.SEXO));
+        nacionalidad = cursor.getString(cursor.getColumnIndex(HijosEntry.NACIONALIDAD));
+        direccion = cursor.getString(cursor.getColumnIndex(HijosEntry.DIRECCION));
+        departamento = cursor.getString(cursor.getColumnIndex(HijosEntry.DEPARTAMENTO));
+        municipio = cursor.getString(cursor.getColumnIndex(HijosEntry.MUNICIPIO));
+        barrio = cursor.getString(cursor.getColumnIndex(HijosEntry.BARRIO));
+        referencia = cursor.getString(cursor.getColumnIndex(HijosEntry.REFERENCIA));
+        nombre_resp = cursor.getString(cursor.getColumnIndex(HijosEntry.NOMBRE_RESPONSABLE));
+        tel = cursor.getString(cursor.getColumnIndex(HijosEntry.TEL));
+        seguro = cursor.getString(cursor.getColumnIndex(HijosEntry.SEGURO));
+        alergias = cursor.getString(cursor.getColumnIndex(HijosEntry.ALERGIA));
     }
 
     public ContentValues toContentValues() {

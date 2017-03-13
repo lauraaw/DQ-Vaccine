@@ -8,6 +8,8 @@ import com.dq.dqvaccine.R;
 
 public class HijosActivity extends AppCompatActivity {
 
+    public static final String EXTRA_HIJO_ID = "extra_hijo_id";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
