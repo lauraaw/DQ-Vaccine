@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.dq.dqvaccine.clases.Hijo;
 import com.dq.dqvaccine.data.DQContract.HijosEntry;
@@ -19,7 +20,7 @@ public class DQbdHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + HijosEntry.TABLE_NAME + " ("
+        db.execSQL("CREATE TABLE IF NOT EXISTS" + HijosEntry.TABLE_NAME + " ("
                 + HijosEntry._ID + " INTEGER PRIMARY KEY,"
                 + HijosEntry.ID + " INTEGER NOT NULL,"
                 + HijosEntry.CI + " INTEGER NOT NULL,"
@@ -41,14 +42,15 @@ public class DQbdHelper extends SQLiteOpenHelper {
                 + "UNIQUE (" + HijosEntry.ID + "))"
         );
 
+        insertarDatos(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 
     public void insertarDatos( SQLiteDatabase sqLiteDatabase) {
+        Log.d("HEY", "Crea:" );
         insertarHijos(sqLiteDatabase, new Hijo(1, 7777778, "Teo", "Villalba", "10/02/2017",
                 "San Lorenzo", "M", "Paraguaya", "10 de Agosto 123", "Central", "San Lorenzo",
                 "San Isidro", null, "Maria Villalba", "0981111222", null, null));

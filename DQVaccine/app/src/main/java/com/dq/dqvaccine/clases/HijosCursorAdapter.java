@@ -6,12 +6,16 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import com.dq.dqvaccine.R;
 import com.dq.dqvaccine.data.DQContract.HijosEntry;
@@ -36,10 +40,11 @@ public class HijosCursorAdapter extends CursorAdapter{
         final ImageView avatarImage = (ImageView) view.findViewById(R.id.iv_avatar);
 
         // Get valores.
-        String name = cursor.getString(cursor.getColumnIndex(HijosEntry.NOMBRE));
-        /*String avatarUri = cursor.getString(cursor.getColumnIndex(HijosEntry.AVATAR_URI));
+        String name = cursor.getString(cursor.getColumnIndex(HijosEntry.NOMBRE))
+                + " " + cursor.getString(cursor.getColumnIndex(HijosEntry.APELLIDO));
+        String avatarUri = "";
 
-         Setup.
+        // Setup.
         nameText.setText(name);
         Glide
                 .with(context)
@@ -55,7 +60,7 @@ public class HijosCursorAdapter extends CursorAdapter{
                         drawable.setCircular(true);
                         avatarImage.setImageDrawable(drawable);
                     }
-                });*/
+                });
 
     }
 }
