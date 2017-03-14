@@ -114,7 +114,9 @@ public class MainActivity extends AppCompatActivity implements
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             VistaEstado.setText(getString(R.string.usuario, acct.getDisplayName(), acct.getEmail()));
-            new DownloadImageTask(VistaFoto).execute(acct.getPhotoUrl().toString());
+            if (acct.getPhotoUrl().toString() != null){
+                new DownloadImageTask(VistaFoto).execute(acct.getPhotoUrl().toString());
+            }
             updateUI(true);
         } else {
             // Signed out, show unauthenticated UI.
