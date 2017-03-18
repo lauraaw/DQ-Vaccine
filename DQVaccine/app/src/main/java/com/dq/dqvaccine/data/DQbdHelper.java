@@ -90,4 +90,16 @@ public class DQbdHelper extends SQLiteOpenHelper {
                 null);
         return c;
     }
+
+    public Cursor getHijoBySex(String hijoSexo) {
+        Cursor c = getReadableDatabase().query(
+                HijosEntry.TABLE_NAME,
+                null,
+                HijosEntry.SEXO + " = ?",
+                new String[]{hijoSexo},
+                null,
+                null,
+                null);
+        return c;
+    }
 }

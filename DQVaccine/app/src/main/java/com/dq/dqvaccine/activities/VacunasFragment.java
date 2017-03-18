@@ -16,55 +16,55 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.dq.dqvaccine.R;
-import com.dq.dqvaccine.clases.HijosCursorAdapter;
+import com.dq.dqvaccine.clases.VacunasCursorAdapter;
 import com.dq.dqvaccine.data.DQContract.HijosEntry;
 import com.dq.dqvaccine.data.DQbdHelper;
 
 
-public class HijosFragment extends Fragment {
+public class VacunasFragment extends Fragment {
 
     private DQbdHelper mDQbdHelper;
 
-    private ListView mHijosList;
-    private HijosCursorAdapter mHijosAdapter;
+    private ListView mVacunasList1;
+    private ListView mVacunasList2;
+    private VacunasCursorAdapter mVacunasAdapter1;
+    private VacunasCursorAdapter mVacunasAdapter2;
     //private SimpleCursorAdapter mHijosAdapter;
 
 
-    public HijosFragment() {
+    public VacunasFragment() {
         // Required empty public constructor
     }
 
-    public static HijosFragment newInstance() {
-        return new HijosFragment();
+    public static VacunasFragment newInstance() {
+        return new VacunasFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_hijos, container, false);
+        View root = inflater.inflate(R.layout.fragment_vacunas, container, false);
 
-        mHijosList = (ListView) root.findViewById(R.id.hijos_list);
-        mHijosAdapter = new HijosCursorAdapter(getActivity(), null);
-        /*mHijosAdapter = new SimpleCursorAdapter(
-                getActivity(), // Context context
-                android.R.layout.two_line_list_item, // int layout
-                mDQbdHelper.getAllHijos(), // Cursor c
-                new String[]{HijosEntry.NOMBRE + " " + HijosEntry.APELLIDO, HijosEntry.CI}, // String[] from
-                new int[]{android.R.id.text1, android.R.id.text2}, // int[] to
-                SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER // int flags
-        );*/
-        mHijosList.setAdapter(mHijosAdapter);
+        mVacunasList1 = (ListView) root.findViewById(R.id.vacunas_list1);
+        mVacunasList2 = (ListView) root.findViewById(R.id.vacunas_list2);
+        mVacunasAdapter1 = new VacunasCursorAdapter(getActivity(), null);
+        mVacunasAdapter2 = new VacunasCursorAdapter(getActivity(), null);
 
-        mHijosList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mVacunasList1.setAdapter(mVacunasAdapter1);
+        mVacunasList2.setAdapter(mVacunasAdapter2);
+
+        /*
+        mVacunasList1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Cursor currentItem = (Cursor) mHijosAdapter.getItem(i);
                 int currentHijoId = currentItem.getInt(
                         currentItem.getColumnIndex(HijosEntry.ID));
+                System.out.println(currentHijoId);
                 showDetailScreen(currentHijoId);
             }
         });
-
+        */
 
         getActivity().deleteDatabase(DQbdHelper.DATABASE_NAME);
 
@@ -72,25 +72,21 @@ public class HijosFragment extends Fragment {
         /*SQLiteDatabase db = mDQbdHelper.getWritableDatabase();
         mDQbdHelper.insertarDatos(db);*/
 
-        loadHijos();
+        loadDatos();
         return root;
     }
 
-    /*private void showDetailScreen(int currentHijoId) {
+    /*
+    private void showDetailScreen(int currentHijoId) {
         Intent intent = new Intent(getActivity(), HijosDetalleActivity.class);
         intent.putExtra(HijosActivity.EXTRA_HIJO_ID, currentHijoId);
         startActivity(intent);
-    }*/
-
-    private void showDetailScreen(int currentHijoId) {
-        Intent intent = new Intent(getActivity(), VacunasActivity.class);
-        //intent.putExtra(HijosActivity.EXTRA_HIJO_ID, currentHijoId);
-        startActivity(intent);
     }
+    */
 
-
-    private void loadHijos() {
-        new HijosLoadTask().execute();
+    private void loadDatos() {
+        new DatosLoadTask().execute();
+        new DatosLoadTask2().execute();
     }
 
     @Override
@@ -98,22 +94,42 @@ public class HijosFragment extends Fragment {
 
     }
 
-    private class HijosLoadTask extends AsyncTask<Void, Void, Cursor> {
+    private class DatosLoadTask extends AsyncTask<Void, Void, Cursor> {
 
         @Override
         protected Cursor doInBackground(Void... voids) {
-            return mDQbdHelper.getAllHijos();
+            return mDQbdHelper.getHijoBySex("M");
         }
 
         @Override
         protected void onPostExecute(Cursor cursor) {
             if (cursor != null && cursor.getCount() > 0) {
-                mHijosAdapter.swapCursor(cursor);
+                mVacunasAdapter1.swapCursor(cursor);
             } else {
-                // Mostrar empty state
+                // Mostrar emtpty state
             }
         }
 
 
-    }}
+    }
+
+    private class DatosLoadTask2 extends AsyncTask<Void, Void, Cursor> {
+
+        @Override
+        protected Cursor doInBackground(Void... voids) {
+            return mDQbdHelper.getHijoBySex("F");
+        }
+
+        @Override
+        protected void onPostExecute(Cursor cursor) {
+            if (cursor != null && cursor.getCount() > 0) {
+                mVacunasAdapter2.swapCursor(cursor);
+            } else {
+                // Mostrar emtpty state
+            }
+        }
+
+
+    }
+}
 
