@@ -6,8 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+//TODO: importar las clases de las vacunas y responsables.
 import com.dq.dqvaccine.clases.Hijo;
 import com.dq.dqvaccine.data.DQContract.HijosEntry;
+import com.dq.dqvaccine.data.DQContract.ResponsablesEntry;
+import com.dq.dqvaccine.data.DQContract.VacunasEntry;
 
 public class DQbdHelper extends SQLiteOpenHelper {
 
@@ -20,6 +23,19 @@ public class DQbdHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        db.execSQL("CREATE TABLE " + ResponsablesEntry.TABLE_NAME + " ("
+                + ResponsablesEntry._ID + " INTEGER PRIMARY KEY,"
+                + ResponsablesEntry.ID + " INTEGER NOT NULL,"
+                + ResponsablesEntry.CI + " INTEGER NOT NULL,"
+                + ResponsablesEntry.NOMBRE + " TEXT NOT NULL,"
+                + ResponsablesEntry.APELLIDO + " TEXT NOT NULL,"
+                + ResponsablesEntry.CORREO + " TEXT NOT NULL,"
+                + ResponsablesEntry.FECHA_NAC + " TEXT NOT NULL,"
+                + ResponsablesEntry.LUGAR_NAC + " TEXT,"
+                + "UNIQUE (" + ResponsablesEntry.ID + "))"
+        );
+
         db.execSQL("CREATE TABLE " + HijosEntry.TABLE_NAME + " ("
                 + HijosEntry._ID + " INTEGER PRIMARY KEY,"
                 + HijosEntry.ID + " INTEGER NOT NULL,"
@@ -41,6 +57,23 @@ public class DQbdHelper extends SQLiteOpenHelper {
                 + HijosEntry.ALERGIA + " TEXT,"
                 + "UNIQUE (" + HijosEntry.ID + "))"
         );
+
+        db.execSQL("CREATE TABLE " + VacunasEntry.TABLE_NAME + " ("
+                + VacunasEntry._ID + " INTEGER PRIMARY KEY,"
+                + VacunasEntry.ID + " INTEGER NOT NULL,"
+                + VacunasEntry.NOMBRE_VAC + " TEXT NOT NULL,"
+                + VacunasEntry.ID_HIJO + " INTEGER NOT NULL,"
+                + VacunasEntry.EDAD + " TEXT,"
+                + VacunasEntry.DOSIS + " INTEGER,"
+                + VacunasEntry.FECHA + " TEXT,"
+                + VacunasEntry.LOTE + " TEXT,"
+                + VacunasEntry.RESPONSABLE + " TEXT,"
+                + VacunasEntry.MES_APLICACION + " INTEGER,"
+                + "UNIQUE (" + VacunasEntry.ID + "),"
+                + "FOREIGN KEY (" + VacunasEntry.ID_HIJO + ") REFERENCES "
+                + HijosEntry.TABLE_NAME + "(" + HijosEntry.ID + "))"
+        );
+
 
         insertarDatos(db);
     }
