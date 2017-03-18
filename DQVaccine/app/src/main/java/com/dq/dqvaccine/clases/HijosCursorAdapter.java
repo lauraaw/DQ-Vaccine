@@ -39,7 +39,7 @@ public class HijosCursorAdapter extends CursorAdapter{
         TextView nameText = (TextView) view.findViewById(R.id.tv_name);
         final ImageView avatarImage = (ImageView) view.findViewById(R.id.iv_avatar);
 
-        // Get valores.
+        // Get valores..
         String name = cursor.getString(cursor.getColumnIndex(HijosEntry.NOMBRE))
                 + " " + cursor.getString(cursor.getColumnIndex(HijosEntry.APELLIDO));
         String avatarUri = ""; //No tenemos en la bd
