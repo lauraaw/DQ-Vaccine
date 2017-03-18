@@ -91,6 +91,18 @@ public class DQbdHelper extends SQLiteOpenHelper {
         insertarHijos(sqLiteDatabase, new Hijo(2, 7777779, "Sol", "Villalba", "10/02/2017",
                 "San Lorenzo", "F", "Paraguaya", "10 de Agosto 123", "Central", "San Lorenzo",
                 "San Isidro", null, "Maria Villalba", "0981111222", null, null));
+
+        insertarHijos(sqLiteDatabase, new Hijo(3, 7777650, "Fernando", "Benítez", "18/11/2016",
+                "Asunción", "M", "Paraguaya", "10 de Agosto 125", "Central", "San Lorenzo",
+                "San Isidro", null, "Miguel Benítez", "0981123456", null, null));
+
+        insertarHijos(sqLiteDatabase, new Hijo(4, 7777681, "Sarah", "Duarte", "10/09/2016",
+                "Luque", "F", "Paraguaya", "Comandante Peralta 259", "Central", "Luque",
+                "San Juan", null, "Mercedes Ibarra", "0971650859", null, null));
+
+        insertarHijos(sqLiteDatabase, new Hijo(5, 7777100, "Larissa", "Galeano", "15/03/2016",
+                "Asunción", "F", "Paraguaya", "Paz del Chaco 820", "Central", "Asunción",
+                "Santa María", null, "Victor Galeano", "0972333999", null, null));
     }
 
     public long insertarHijos(SQLiteDatabase db, Hijo hijo){
