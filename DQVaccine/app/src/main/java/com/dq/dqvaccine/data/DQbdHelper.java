@@ -83,7 +83,6 @@ public class DQbdHelper extends SQLiteOpenHelper {
     }
 
     public void insertarDatos( SQLiteDatabase sqLiteDatabase) {
-        Log.d("HEY", "Crea:" );
         insertarHijos(sqLiteDatabase, new Hijo(1, 7777778, "Teo", "Villalba", "10/02/2017",
                 "San Lorenzo", "M", "Paraguaya", "10 de Agosto 123", "Central", "San Lorenzo",
                 "San Isidro", null, "Maria Villalba", "0981111222", null, null));
