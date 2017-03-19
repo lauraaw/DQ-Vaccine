@@ -14,7 +14,7 @@ import com.dq.dqvaccine.data.DQContract.VacunasEntry;
 
 
 //TODO: Cargar datos de Vacunas
-//TODO: Crear nuevos Selects para las vacunas
+//TODO: Crear nuevos Selects para las vacunas --- YA
 
 public class DQbdHelper extends SQLiteOpenHelper {
 
@@ -75,8 +75,8 @@ public class DQbdHelper extends SQLiteOpenHelper {
                 + VacunasEntry.FECHA + " TEXT,"
                 + VacunasEntry.LOTE + " TEXT,"
                 + VacunasEntry.RESPONSABLE + " TEXT,"
-                + VacunasEntry.MES_APLICACION + " INTEGER,"
-                + VacunasEntry.APLICADO + " INTEGER,"
+                + VacunasEntry.MES_APLICACION + " INTEGER NOT NULL,"
+                + VacunasEntry.APLICADO + " INTEGER NOT NULL,"
                 + "UNIQUE (" + VacunasEntry.ID + "),"
                 + "FOREIGN KEY (" + VacunasEntry.ID_HIJO + ") REFERENCES "
                 + HijosEntry.TABLE_NAME + "(" + HijosEntry.ID + "))"
@@ -173,6 +173,18 @@ public class DQbdHelper extends SQLiteOpenHelper {
                 null,
                 HijosEntry.SEXO + " = ?",
                 new String[]{hijoSexo},
+                null,
+                null,
+                null);
+        return c;
+    }
+
+    public Cursor getVacunasByMes(String vacunaMes) {
+        Cursor c = getReadableDatabase().query(
+                VacunasEntry.TABLE_NAME,
+                null,
+                VacunasEntry.MES_APLICACION + " = ?",
+                new String[]{vacunaMes},
                 null,
                 null,
                 null);
