@@ -5,20 +5,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import com.dq.dqvaccine.R;
 import com.dq.dqvaccine.clases.ExpandableListAdapter;
-import com.dq.dqvaccine.clases.VacunasCursorAdapter;
 import com.dq.dqvaccine.data.DQContract;
 import com.dq.dqvaccine.data.DQbdHelper;
 
