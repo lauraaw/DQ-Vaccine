@@ -35,7 +35,7 @@
         android:id="@+id/tv_dosis"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dosis:"
+        android:text="Dosis: "
         android:layout_below="@+id/lblListItem"
         android:layout_alignStart="@+id/lblListItem" />
 
@@ -43,7 +43,7 @@
         android:id="@+id/tv_edad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edad:"
+        android:text="Edad: "
         android:layout_below="@+id/tv_dosis"
         android:layout_alignStart="@+id/tv_dosis" />
 
@@ -51,16 +51,16 @@
         android:id="@+id/tv_fecha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fecha:"
-        android:layout_below="@+id/lblListItem"
-        android:layout_toEndOf="@+id/tv_responsable"
-        android:layout_marginStart="29dp" />
+        android:text="Fecha: "
+        android:layout_marginStart="125dp"
+        android:layout_toEndOf="@+id/iv_vacunas"
+        android:layout_below="@+id/lblListItem" />
 
     <TextView
         android:id="@+id/tv_responsable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Responsable:"
+        android:text="Responsable: "
         android:layout_below="@+id/tv_edad"
         android:layout_alignStart="@+id/tv_edad" />
 
@@ -70,6 +70,6 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/tv_fecha"
         android:layout_below="@+id/tv_fecha"
-        android:text="Lote:" />
+        android:text="Lote :" />
 
 </RelativeLayout>

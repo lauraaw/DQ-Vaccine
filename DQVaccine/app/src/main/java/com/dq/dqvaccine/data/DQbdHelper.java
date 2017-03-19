@@ -67,7 +67,7 @@ public class DQbdHelper extends SQLiteOpenHelper {
         );
 
         db.execSQL("CREATE TABLE " + VacunasEntry.TABLE_NAME + " ("
-                + VacunasEntry._ID + " INTEGER PRIMARY KEY,"
+                //+ VacunasEntry._ID + " INTEGER PRIMARY KEY,"
                 + VacunasEntry.ID + " INTEGER NOT NULL,"
                 + VacunasEntry.NOMBRE_VAC + " TEXT NOT NULL,"
                 + VacunasEntry.ID_HIJO + " INTEGER NOT NULL,"
@@ -78,7 +78,8 @@ public class DQbdHelper extends SQLiteOpenHelper {
                 + VacunasEntry.RESPONSABLE + " TEXT,"
                 + VacunasEntry.MES_APLICACION + " INTEGER NOT NULL,"
                 + VacunasEntry.APLICADO + " INTEGER NOT NULL,"
-                + "UNIQUE (" + VacunasEntry.ID + "),"
+                //+ "UNIQUE (" + VacunasEntry.ID + "),"
+                + " PRIMARY KEY(" + VacunasEntry.ID + ", " + VacunasEntry.ID_HIJO + "), "
                 + "FOREIGN KEY (" + VacunasEntry.ID_HIJO + ") REFERENCES "
                 + HijosEntry.TABLE_NAME + "(" + HijosEntry.ID + "))"
         );
@@ -156,6 +157,127 @@ public class DQbdHelper extends SQLiteOpenHelper {
 
         insertarVacuna(sqLiteDatabase, new Vacuna(108, "Pentavalente", 3, " ", 2,
                 " ", " ", " ", 4, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(109, "OPV/IPV", 3, " ", 2,
+                " ", " ", " ", 6, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(110, "Pentavalente", 3, " ", 3,
+                " ", " ", " ", 6, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(111, "Influenza 1RA", 3, " ", 1,
+                " ", " ", " ", 6, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(112, "Influenza 2RA", 3, " ", 1,
+                " ", " ", " ", 6, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(113, "SPR", 3, " ", 1,
+                " ", " ", " ", 12, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(114, "PCV 10 REF.", 3, " ", 1,
+                " ", " ", " ", 12, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(115, "AA", 3, " ", 1,
+                " ", " ", " ", 12, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(116, "Influenza.", 3, " ", 1,
+                " ", " ", " ", 12, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(117, "V.V.Z.", 3, " ", 1,
+                " ", " ", " ", 15, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(118, "V.H.A.", 3, " ", 1,
+                " ", " ", " ", 15, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(119, "OPV/IPV", 3, " ", 3,
+                " ", " ", " ", 18, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(120, "D.P.T.", 3, " ", 1,
+                " ", " ", " ", 18, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(121, "OPV/IPV", 3, " ", 4,
+                " ", " ", " ", 48, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(122, "D.P.T.", 3, " ", 2,
+                " ", " ", " ", 48, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(123, "SPR", 3, " ", 2,
+                " ", " ", " ", 48, 0));
+
+        insertarTodo(sqLiteDatabase, 1);
+    }
+
+    private void insertarTodo(SQLiteDatabase sqLiteDatabase, int i) {
+        insertarVacuna(sqLiteDatabase, new Vacuna(100, "BCG (Tuberculosis)", i, " ", 1,
+                " ", " ", " ", 0, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(101, "Rotavirus", i , " ", 1,
+                " ", " ", " ", 2, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(102, "IPV", i, " ", 1,
+                " ", " ", " ", 2, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(103, "PCV 10 Valente", i, " ", 1,
+                " ", " ", " ", 2, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(104, "Pentavalente", i, " ", 1,
+                " ", " ", " ", 2, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(105, "OPV/IPV", i, " ", 1,
+                " ", " ", " ", 4, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(106, "Rotavirus", i, " ", 2,
+                " ", " ", " ", 4, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(107, "PCV 10 Valente", i, " ", 2,
+                " ", " ", " ", 4, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(108, "Pentavalente", i, " ", 2,
+                " ", " ", " ", 4, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(109, "OPV/IPV", i, " ", 2,
+                " ", " ", " ", 6, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(110, "Pentavalente", i, " ", 3,
+                " ", " ", " ", 6, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(111, "Influenza 1RA", i, " ", 1,
+                " ", " ", " ", 6, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(112, "Influenza 2RA", i, " ", 1,
+                " ", " ", " ", 6, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(113, "SPR", i, " ", 1,
+                " ", " ", " ", 12, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(114, "PCV 10 REF.", i, " ", 1,
+                " ", " ", " ", 12, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(115, "AA", i, " ", 1,
+                " ", " ", " ", 12, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(116, "Influenza.", i, " ", 1,
+                " ", " ", " ", 12, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(117, "V.V.Z.", i, " ", 1,
+                " ", " ", " ", 15, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(118, "V.H.A.", i, " ", 1,
+                " ", " ", " ", 15, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(119, "OPV/IPV", i, " ", 3,
+                " ", " ", " ", 18, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(120, "D.P.T.", i, " ", 1,
+                " ", " ", " ", 18, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(121, "OPV/IPV", i, " ", 4,
+                " ", " ", " ", 48, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(122, "D.P.T.", i, " ", 2,
+                " ", " ", " ", 48, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(123, "SPR", i, " ", 2,
+                " ", " ", " ", 48, 0));
     }
 
     public long insertarResponsable(SQLiteDatabase db, Responsable responsable){
@@ -215,15 +337,12 @@ public class DQbdHelper extends SQLiteOpenHelper {
         return c;
     }
 
-    public Cursor getVacunasByMes(String vacunaMes) {
-        Cursor c = getReadableDatabase().query(
-                VacunasEntry.TABLE_NAME,
-                null,
-                VacunasEntry.MES_APLICACION + " = ?",
-                new String[]{vacunaMes},
-                null,
-                null,
-                null);
+    public Cursor getVacunasByMes(String vacunaMes, String hijoId) {
+        Cursor c = getReadableDatabase().rawQuery("SELECT * FROM "
+                + VacunasEntry.TABLE_NAME + " WHERE " +
+                VacunasEntry.MES_APLICACION + " = ? AND " +
+                VacunasEntry.ID_HIJO + " = ?"
+                , new String[]{vacunaMes, hijoId});
         return c;
     }
 }

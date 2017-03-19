@@ -14,6 +14,7 @@ import android.widget.ExpandableListView;
 
 import com.dq.dqvaccine.R;
 import com.dq.dqvaccine.clases.ExpandableListAdapter;
+import com.dq.dqvaccine.clases.Vacuna;
 import com.dq.dqvaccine.data.DQContract;
 import com.dq.dqvaccine.data.DQbdHelper;
 
@@ -21,9 +22,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-//TODO: Crear tantos DatosLoadTasks se necesiten segun mes_aplicacion
+//TODO: Crear tantos DatosLoadTasks se necesiten segun mes_aplicacion -- YA, solo uno
 //TODO: En DatosLoadTask, hacer Vacuna(cursor) y add a ArrayList<Vacuna>
 //TODO: listDataChild debe ser List<Vacuna>
+//TODO: Poner boton de atras en el toolbar
 
 public class VacunasFragment extends Fragment {
 
@@ -36,7 +38,7 @@ public class VacunasFragment extends Fragment {
     private ExpandableListAdapter mVacunasAdapter;
 
     List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
+    HashMap<String, List<Vacuna>> listDataChild;
 
 
     public VacunasFragment() {
@@ -101,61 +103,76 @@ public class VacunasFragment extends Fragment {
         }
     }
 
-    private class DatosLoadTask extends AsyncTask<Void, Void, ArrayList> {
+    private class DatosLoadTask extends AsyncTask<String, Void, ArrayList> {
 
         @Override
-        protected ArrayList<String> doInBackground(Void... voids) {
-            Cursor cursor = mDQbdHelper.getHijoBySex("M");
-            ArrayList<String> mArrayList = new ArrayList<String>();
+        protected ArrayList<Vacuna> doInBackground(String... par) {
+            Cursor cursor = mDQbdHelper.getVacunasByMes(par[0], par[1]);
+            ArrayList<Vacuna> mArrayList = new ArrayList<Vacuna>();
             for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 // The Cursor is now set to the right position
-                mArrayList.add(cursor.getString(cursor.getColumnIndex(DQContract.HijosEntry.NOMBRE))
-                        + " " + cursor.getString(cursor.getColumnIndex(DQContract.HijosEntry.APELLIDO)));
+                Vacuna v = new Vacuna(cursor);
+                mArrayList.add(v);
             }
             return  mArrayList;
         }
     }
 
-    private class DatosLoadTask2 extends AsyncTask<Void, Void, ArrayList> {
 
-        @Override
-        protected ArrayList<String> doInBackground(Void... voids) {
-            Cursor cursor = mDQbdHelper.getHijoBySex("F");
-            ArrayList<String> mArrayList = new ArrayList<String>();
-            for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                // The Cursor is now set to the right position
-                mArrayList.add(cursor.getString(cursor.getColumnIndex(DQContract.HijosEntry.NOMBRE))
-                        + " " + cursor.getString(cursor.getColumnIndex(DQContract.HijosEntry.APELLIDO)));
-            }
-            return  mArrayList;
-        }
-
-
-
-    }
 
     private void prepareListData() {
         listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+        listDataChild = new HashMap<String, List<Vacuna>>();
 
         // Adding child data
-        listDataHeader.add("Masculino");
-        listDataHeader.add("Femenino");
-        listDataHeader.add("Femenino");
+        listDataHeader.add("Al nacer");
+        listDataHeader.add("Dos meses");
+        listDataHeader.add("Cuatro meses");
+        listDataHeader.add("Seis meses");
+        listDataHeader.add("Doce meses");
+        listDataHeader.add("Quince meses");
+        listDataHeader.add("Dieciocho meses");
+        listDataHeader.add("Cuarenta y ocho meses");
 
         // Adding child data
-        List<String> masculino1 = new DatosLoadTask().doInBackground();
+        List<Vacuna> lista = new DatosLoadTask().doInBackground("0", String.valueOf(mHijoId));
 
+        listDataChild.put(listDataHeader.get(0), lista); // Header, Child data
 
-        List<String> femenino1 = new DatosLoadTask2().doInBackground();
+        //--------
+        lista = new DatosLoadTask().doInBackground("2", String.valueOf(mHijoId));
 
+        listDataChild.put(listDataHeader.get(1), lista); // Header, Child data
 
-        List<String> femenino2 = new DatosLoadTask2().doInBackground();
+        //--------
+        lista = new DatosLoadTask().doInBackground("4", String.valueOf(mHijoId));
 
+        listDataChild.put(listDataHeader.get(2), lista); // Header, Child data
 
-        listDataChild.put(listDataHeader.get(0), masculino1); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), femenino1);
-        listDataChild.put(listDataHeader.get(2), femenino2);
+        //--------
+        lista = new DatosLoadTask().doInBackground("6", String.valueOf(mHijoId));
+
+        listDataChild.put(listDataHeader.get(3), lista); // Header, Child data
+
+        //--------
+        lista = new DatosLoadTask().doInBackground("12", String.valueOf(mHijoId));
+
+        listDataChild.put(listDataHeader.get(4), lista); // Header, Child data
+
+        //--------
+        lista = new DatosLoadTask().doInBackground("15", String.valueOf(mHijoId));
+
+        listDataChild.put(listDataHeader.get(5), lista); // Header, Child data
+
+        //--------
+        lista = new DatosLoadTask().doInBackground("18", String.valueOf(mHijoId));
+
+        listDataChild.put(listDataHeader.get(6), lista); // Header, Child data
+
+        //--------
+        lista = new DatosLoadTask().doInBackground("48", String.valueOf(mHijoId));
+
+        listDataChild.put(listDataHeader.get(7), lista); // Header, Child data
     }
 }
 

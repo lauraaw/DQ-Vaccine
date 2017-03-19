@@ -25,10 +25,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<String>> _listDataChild;
+    private HashMap<String, List<Vacuna>> _listDataChild;
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<String>> listChildData) {
+                                 HashMap<String, List<Vacuna>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -49,7 +49,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final String childText = (String) getChild(groupPosition, childPosition);
+        final Vacuna child = (Vacuna) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -57,10 +57,34 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_item_vacunas, null);
         }
 
+        //Nombre vacuna
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.lblListItem);
 
-        txtListChild.setText(childText);
+        txtListChild.setText(child.getNombre_vac());
+
+        //Dosis
+
+        txtListChild = (TextView) convertView.findViewById(R.id.tv_dosis);
+        txtListChild.setText("Dosis: " + String.valueOf(child.getDosis()));
+
+        //Fecha
+
+        txtListChild = (TextView) convertView.findViewById(R.id.tv_fecha);
+        txtListChild.setText("Fecha: " + child.getFecha());
+
+        //Edad
+        txtListChild = (TextView) convertView.findViewById(R.id.tv_edad);
+        txtListChild.setText("Edad: " + child.getEdad());
+
+        //Lote
+        txtListChild = (TextView) convertView.findViewById(R.id.tv_lote);
+        txtListChild.setText("Lote: " + child.getLote());
+
+        //Responsable
+        txtListChild = (TextView) convertView.findViewById(R.id.tv_responsable);
+        txtListChild.setText("Responsable: " + child.getResponsable());
+
         ImageView imgListChild = (ImageView) convertView.findViewById(R.id.iv_vacunas);
         imgListChild.setImageResource(R.drawable.googleg_color);
         return convertView;
