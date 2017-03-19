@@ -27,7 +27,6 @@ public class HijosFragment extends Fragment {
 
     private ListView mHijosList;
     private HijosCursorAdapter mHijosAdapter;
-    //private SimpleCursorAdapter mHijosAdapter;
 
 
     public HijosFragment() {
@@ -45,14 +44,6 @@ public class HijosFragment extends Fragment {
 
         mHijosList = (ListView) root.findViewById(R.id.hijos_list);
         mHijosAdapter = new HijosCursorAdapter(getActivity(), null);
-        /*mHijosAdapter = new SimpleCursorAdapter(
-                getActivity(), // Context context
-                android.R.layout.two_line_list_item, // int layout
-                mDQbdHelper.getAllHijos(), // Cursor c
-                new String[]{HijosEntry.NOMBRE + " " + HijosEntry.APELLIDO, HijosEntry.CI}, // String[] from
-                new int[]{android.R.id.text1, android.R.id.text2}, // int[] to
-                SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER // int flags
-        );*/
         mHijosList.setAdapter(mHijosAdapter);
 
         mHijosList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -61,7 +52,6 @@ public class HijosFragment extends Fragment {
                 Cursor currentItem = (Cursor) mHijosAdapter.getItem(i);
                 int currentHijoId = currentItem.getInt(
                         currentItem.getColumnIndex(HijosEntry.ID));
-                System.out.println(currentHijoId);
                 showDetailScreen(currentHijoId);
             }
         });
@@ -70,15 +60,19 @@ public class HijosFragment extends Fragment {
         getActivity().deleteDatabase(DQbdHelper.DATABASE_NAME);
 
         mDQbdHelper = new DQbdHelper(getActivity());
-        /*SQLiteDatabase db = mDQbdHelper.getWritableDatabase();
-        mDQbdHelper.insertarDatos(db);*/
 
         loadHijos();
         return root;
     }
 
-    private void showDetailScreen(int currentHijoId) {
+    /*private void showDetailScreen(int currentHijoId) {
         Intent intent = new Intent(getActivity(), HijosDetalleActivity.class);
+        intent.putExtra(HijosActivity.EXTRA_HIJO_ID, currentHijoId);
+        startActivity(intent);
+    }*/
+
+    private void showDetailScreen(int currentHijoId) {
+        Intent intent = new Intent(getActivity(), VacunasActivity.class);
         intent.putExtra(HijosActivity.EXTRA_HIJO_ID, currentHijoId);
         startActivity(intent);
     }
