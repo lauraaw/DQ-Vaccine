@@ -15,18 +15,61 @@
         android:id="@+id/lblListItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="72dp"
         android:text="New Text"
         android:textAppearance="?textAppearanceListItem"
-        tools:text="Carlos Giron" />
+        tools:text="Vacuna"
+        android:layout_alignTop="@+id/iv_vacunas"
+        android:layout_toEndOf="@+id/iv_vacunas"
+        android:layout_marginStart="12dp" />
 
     <ImageView
         android:id="@+id/iv_vacunas"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_centerVertical="true"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/ic_account_circle" />
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:scaleType="center"
+        app:srcCompat="@drawable/ic_account_circle"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/tv_dosis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dosis:"
+        android:layout_below="@+id/lblListItem"
+        android:layout_alignStart="@+id/lblListItem" />
+
+    <TextView
+        android:id="@+id/tv_edad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edad:"
+        android:layout_below="@+id/tv_dosis"
+        android:layout_alignStart="@+id/tv_dosis" />
+
+    <TextView
+        android:id="@+id/tv_fecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha:"
+        android:layout_below="@+id/lblListItem"
+        android:layout_toEndOf="@+id/tv_responsable"
+        android:layout_marginStart="29dp" />
+
+    <TextView
+        android:id="@+id/tv_responsable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Responsable:"
+        android:layout_below="@+id/tv_edad"
+        android:layout_alignStart="@+id/tv_edad" />
+
+    <TextView
+        android:id="@+id/tv_lote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tv_fecha"
+        android:layout_below="@+id/tv_fecha"
+        android:text="Lote:" />
 
 </RelativeLayout>
