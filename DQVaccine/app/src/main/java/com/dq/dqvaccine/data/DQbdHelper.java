@@ -55,7 +55,10 @@ public class DQbdHelper extends SQLiteOpenHelper {
                 + HijosEntry.TEL + " TEXT,"
                 + HijosEntry.SEGURO + " TEXT,"
                 + HijosEntry.ALERGIA + " TEXT,"
-                + "UNIQUE (" + HijosEntry.ID + "))"
+                + HijosEntry.ID_RESP + " INTEGER NOT NULL,"
+                + "UNIQUE (" + HijosEntry.ID + "),"
+                + "FOREIGN KEY (" + HijosEntry.ID_RESP + ") REFERENCES "
+                + ResponsablesEntry.TABLE_NAME + "(" + ResponsablesEntry.ID + "))"
         );
 
         db.execSQL("CREATE TABLE " + VacunasEntry.TABLE_NAME + " ("
