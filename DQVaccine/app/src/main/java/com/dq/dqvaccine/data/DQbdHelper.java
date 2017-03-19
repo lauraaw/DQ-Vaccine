@@ -77,7 +77,7 @@ public class DQbdHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY (" + VacunasEntry.ID_HIJO + ") REFERENCES "
                 + HijosEntry.TABLE_NAME + "(" + HijosEntry.ID + "))"
         );
-        
+
         insertarDatos(db);
     }
 
