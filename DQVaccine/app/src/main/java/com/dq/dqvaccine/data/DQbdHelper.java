@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.dq.dqvaccine.clases.Hijo;
 import com.dq.dqvaccine.clases.Responsable;
+import com.dq.dqvaccine.clases.Vacuna;
 import com.dq.dqvaccine.data.DQContract.HijosEntry;
 import com.dq.dqvaccine.data.DQContract.ResponsablesEntry;
 import com.dq.dqvaccine.data.DQContract.VacunasEntry;
@@ -93,39 +94,68 @@ public class DQbdHelper extends SQLiteOpenHelper {
 
         //Datos de los Responsables
 
-        insertarResponsable(sqLiteDatabase, new Responsable(101, 2589631, "Maria", "Villalba",
+        insertarResponsable(sqLiteDatabase, new Responsable(901, 2589631, "Maria", "Villalba",
                 "mariavi01@gmail.com", "09/02/1988", "San Lorenzo"));
 
-        insertarResponsable(sqLiteDatabase, new Responsable(102, 1986700, "Miguel", "Benitez",
+        insertarResponsable(sqLiteDatabase, new Responsable(902, 1986700, "Miguel", "Benitez",
                 "maba85@gmail.com", "13/12/1985", "Asunción"));
 
-        insertarResponsable(sqLiteDatabase, new Responsable(103, 2444888, "Mercedes", "Ibarra",
+        insertarResponsable(sqLiteDatabase, new Responsable(903, 2444888, "Mercedes", "Ibarra",
                 "merceiba@gmail.com", "19/03/1990", "Luque"));
 
-        insertarResponsable(sqLiteDatabase, new Responsable(104, 2589631, "Victor", "Galeano",
+        insertarResponsable(sqLiteDatabase, new Responsable(904, 2589631, "Victor", "Galeano",
                 "victorgale@gmail.com", "10/06/1985", "Asunción"));
 
         //Datos de los Hijos
 
         insertarHijos(sqLiteDatabase, new Hijo(1, 7777778, "Teo", "Villalba", "10/02/2017",
                 "San Lorenzo", "M", "Paraguaya", "10 de Agosto 123", "Central", "San Lorenzo",
-                "San Isidro", null, "Maria Villalba", "0981111222", null, null, 101));
+                "San Isidro", null, "Maria Villalba", "0981111222", null, null, 901));
 
         insertarHijos(sqLiteDatabase, new Hijo(2, 7777779, "Sol", "Villalba", "10/02/2017",
                 "San Lorenzo", "F", "Paraguaya", "10 de Agosto 123", "Central", "San Lorenzo",
-                "San Isidro", null, "Maria Villalba", "0981111222", null, null, 101));
+                "San Isidro", null, "Maria Villalba", "0981111222", null, null, 901));
 
         insertarHijos(sqLiteDatabase, new Hijo(3, 7777650, "Fernando", "Benítez", "18/11/2016",
                 "Asunción", "M", "Paraguaya", "10 de Agosto 125", "Central", "San Lorenzo",
-                "San Isidro", null, "Miguel Benítez", "0981123456", null, null, 102));
+                "San Isidro", null, "Miguel Benítez", "0981123456", null, null, 902));
 
         insertarHijos(sqLiteDatabase, new Hijo(4, 7777681, "Sarah", "Duarte", "10/09/2016",
                 "Luque", "F", "Paraguaya", "Comandante Peralta 259", "Central", "Luque",
-                "San Juan", null, "Mercedes Ibarra", "0971650859", null, null, 103));
+                "San Juan", null, "Mercedes Ibarra", "0971650859", null, null, 903));
 
         insertarHijos(sqLiteDatabase, new Hijo(5, 7777100, "Larissa", "Galeano", "15/03/2016",
                 "Asunción", "F", "Paraguaya", "Paz del Chaco 820", "Central", "Asunción",
-                "Santa María", null, "Victor Galeano", "0972333999", null, null, 104));
+                "Santa María", null, "Victor Galeano", "0972333999", null, null, 904));
+
+        //Datos de las vacunas
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(100, "BCG (Tuberculosis)", 3 , "0 meses", 1,
+                "18/11/2016", "H018653", "Lic. Beatriz Orué", 0, 1));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(101, "Rotavirus", 3 , "2 meses", 1,
+                "20/01/2017", "H018900", "Lic. Beatriz Orué", 2, 1));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(102, "IPV", 3, "2 meses", 1,
+                "20/01/2017", "I032950", "Lic. Beatriz Orué", 2, 1));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(103, "PCV 10 Valente", 3, "2 meses", 1,
+                "25/01/2017", "P993446", "Lic. Oscar Duré", 2, 1));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(104, "Pentavalente", 3, "2 meses", 1,
+                "25/01/2017", "H015963", "Lic. Oscar Duré", 2, 1));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(105, "OPV/IPV", 3, "4 meses", 1,
+                "18/03/2017", "P233456", "Lic. Norma Aquino", 4, 1));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(106, "Rotavirus", 3, "4 meses", 2,
+                "18/03/2017", "H018901", "Lic. Norma Aquino", 4, 1));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(107, "PCV 10 Valente", 3, " ", 2,
+                " ", " ", " ", 4, 0));
+
+        insertarVacuna(sqLiteDatabase, new Vacuna(108, "Pentavalente", 3, " ", 2,
+                " ", " ", " ", 4, 0));
     }
 
     public long insertarResponsable(SQLiteDatabase db, Responsable responsable){
@@ -135,12 +165,18 @@ public class DQbdHelper extends SQLiteOpenHelper {
                 responsable.toContentValues());
     }
 
-
     public long insertarHijos(SQLiteDatabase db, Hijo hijo){
         return db.insert(
                 HijosEntry.TABLE_NAME,
                 null,
                 hijo.toContentValues());
+    }
+
+    public long insertarVacuna(SQLiteDatabase db, Vacuna vacuna){
+        return db.insert(
+                VacunasEntry.TABLE_NAME,
+                null,
+                vacuna.toContentValues());
     }
 
     public Cursor getAllHijos() {
