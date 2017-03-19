@@ -31,6 +31,7 @@ public class Hijo {
     private String tel;
     private String seguro;
     private String alergias;
+    private int id_resp;
 
     public Hijo(int id, int ci, String nombre, String apellido,
                  String fecha_nac, String lugar_nac, String sexo,
@@ -38,7 +39,7 @@ public class Hijo {
                  String departamento, String municipio,
                  String barrio, String referencia,
                  String nombre_resp, String tel,
-                 String seguro, String alergias){
+                 String seguro, String alergias, int id_resp){
         this.id = id;
         this.ci = ci;
         this.nombre = nombre;
@@ -56,6 +57,7 @@ public class Hijo {
         this.tel = tel;
         this.seguro = seguro;
         this.alergias = alergias;
+        this.id_resp = id_resp;
     }
 
     public Hijo(Cursor cursor) {
@@ -76,6 +78,7 @@ public class Hijo {
         tel = cursor.getString(cursor.getColumnIndex(HijosEntry.TEL));
         seguro = cursor.getString(cursor.getColumnIndex(HijosEntry.SEGURO));
         alergias = cursor.getString(cursor.getColumnIndex(HijosEntry.ALERGIA));
+        id_resp = cursor.getInt(cursor.getColumnIndex(HijosEntry.ID_RESP));
     }
 
     public ContentValues toContentValues() {
@@ -97,6 +100,7 @@ public class Hijo {
         values.put(HijosEntry.TEL, tel);
         values.put(HijosEntry.SEGURO, seguro);
         values.put(HijosEntry.ALERGIA, alergias);
+        values.put(HijosEntry.ID_RESP, id_resp);
         return values;
     }
 
@@ -167,4 +171,6 @@ public class Hijo {
     public String getAlergias() {
         return alergias;
     }
+
+    public int getId_resp() { return id_resp;}
 }

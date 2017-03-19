@@ -8,6 +8,7 @@ import android.util.Log;
 
 //TODO: importar las clases de las vacunas y responsables.
 import com.dq.dqvaccine.clases.Hijo;
+import com.dq.dqvaccine.clases.Responsable;
 import com.dq.dqvaccine.data.DQContract.HijosEntry;
 import com.dq.dqvaccine.data.DQContract.ResponsablesEntry;
 import com.dq.dqvaccine.data.DQContract.VacunasEntry;
@@ -76,8 +77,7 @@ public class DQbdHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY (" + VacunasEntry.ID_HIJO + ") REFERENCES "
                 + HijosEntry.TABLE_NAME + "(" + HijosEntry.ID + "))"
         );
-
-
+        
         insertarDatos(db);
     }
 
@@ -86,26 +86,51 @@ public class DQbdHelper extends SQLiteOpenHelper {
     }
 
     public void insertarDatos( SQLiteDatabase sqLiteDatabase) {
+
+        //Datos de los Responsables
+
+        insertarResponsable(sqLiteDatabase, new Responsable(101, 2589631, "Maria", "Villalba",
+                "mariavi01@gmail.com", "09/02/1988", "San Lorenzo"));
+
+        insertarResponsable(sqLiteDatabase, new Responsable(102, 1986700, "Miguel", "Benitez",
+                "maba85@gmail.com", "13/12/1985", "Asunción"));
+
+        insertarResponsable(sqLiteDatabase, new Responsable(103, 2444888, "Mercedes", "Ibarra",
+                "merceiba@gmail.com", "19/03/1990", "Luque"));
+
+        insertarResponsable(sqLiteDatabase, new Responsable(104, 2589631, "Victor", "Galeano",
+                "victorgale@gmail.com", "10/06/1985", "Asunción"));
+
+        //Datos de los Hijos
+
         insertarHijos(sqLiteDatabase, new Hijo(1, 7777778, "Teo", "Villalba", "10/02/2017",
                 "San Lorenzo", "M", "Paraguaya", "10 de Agosto 123", "Central", "San Lorenzo",
-                "San Isidro", null, "Maria Villalba", "0981111222", null, null));
+                "San Isidro", null, "Maria Villalba", "0981111222", null, null, 101));
 
         insertarHijos(sqLiteDatabase, new Hijo(2, 7777779, "Sol", "Villalba", "10/02/2017",
                 "San Lorenzo", "F", "Paraguaya", "10 de Agosto 123", "Central", "San Lorenzo",
-                "San Isidro", null, "Maria Villalba", "0981111222", null, null));
+                "San Isidro", null, "Maria Villalba", "0981111222", null, null, 101));
 
         insertarHijos(sqLiteDatabase, new Hijo(3, 7777650, "Fernando", "Benítez", "18/11/2016",
                 "Asunción", "M", "Paraguaya", "10 de Agosto 125", "Central", "San Lorenzo",
-                "San Isidro", null, "Miguel Benítez", "0981123456", null, null));
+                "San Isidro", null, "Miguel Benítez", "0981123456", null, null, 102));
 
         insertarHijos(sqLiteDatabase, new Hijo(4, 7777681, "Sarah", "Duarte", "10/09/2016",
                 "Luque", "F", "Paraguaya", "Comandante Peralta 259", "Central", "Luque",
-                "San Juan", null, "Mercedes Ibarra", "0971650859", null, null));
+                "San Juan", null, "Mercedes Ibarra", "0971650859", null, null, 103));
 
         insertarHijos(sqLiteDatabase, new Hijo(5, 7777100, "Larissa", "Galeano", "15/03/2016",
                 "Asunción", "F", "Paraguaya", "Paz del Chaco 820", "Central", "Asunción",
-                "Santa María", null, "Victor Galeano", "0972333999", null, null));
+                "Santa María", null, "Victor Galeano", "0972333999", null, null, 104));
     }
+
+    public long insertarResponsable(SQLiteDatabase db, Responsable responsable){
+        return db.insert(
+                ResponsablesEntry.TABLE_NAME,
+                null,
+                responsable.toContentValues());
+    }
+
 
     public long insertarHijos(SQLiteDatabase db, Hijo hijo){
         return db.insert(
