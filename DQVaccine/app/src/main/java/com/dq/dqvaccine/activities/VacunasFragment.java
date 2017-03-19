@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+//TODO: Crear tantos DatosLoadTasks se necesiten segun mes_aplicacion
+//TODO: En DatosLoadTask, hacer Vacuna(cursor) y add a ArrayList<Vacuna>
+//TODO: listDataChild debe ser List<Vacuna>
 
 public class VacunasFragment extends Fragment {
 

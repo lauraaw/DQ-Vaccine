@@ -5,13 +5,6 @@ import android.database.Cursor;
 
 import com.dq.dqvaccine.data.DQContract.HijosEntry;
 
-import java.util.Date;
-
-
-
-/**
- * Created by Laura on 3/12/2017.
- */
 
 public class Hijo {
     private int id;

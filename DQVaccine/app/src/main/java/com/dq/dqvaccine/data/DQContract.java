@@ -54,5 +54,6 @@ public class DQContract {
         public static final String LOTE = "lote";
         public static final String RESPONSABLE = "responsable";
         public static final String MES_APLICACION = "mes_aplicacion";
+        public static final String APLICADO = "aplicado";
     }
 }

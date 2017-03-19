@@ -7,8 +7,6 @@ import android.database.Cursor;
 
 import com.dq.dqvaccine.data.DQContract.ResponsablesEntry;
 
-import java.util.Date;
-
 public class Responsable {
     private int id;
     private int ci;

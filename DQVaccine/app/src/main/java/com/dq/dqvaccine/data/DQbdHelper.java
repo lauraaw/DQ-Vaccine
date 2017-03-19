@@ -4,14 +4,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-//TODO: importar las clases de las vacunas y responsables.
+
 import com.dq.dqvaccine.clases.Hijo;
 import com.dq.dqvaccine.clases.Responsable;
 import com.dq.dqvaccine.data.DQContract.HijosEntry;
 import com.dq.dqvaccine.data.DQContract.ResponsablesEntry;
 import com.dq.dqvaccine.data.DQContract.VacunasEntry;
+
+
+//TODO: Cargar datos de Vacunas
+//TODO: Crear nuevos Selects para las vacunas
 
 public class DQbdHelper extends SQLiteOpenHelper {
 
@@ -73,6 +76,7 @@ public class DQbdHelper extends SQLiteOpenHelper {
                 + VacunasEntry.LOTE + " TEXT,"
                 + VacunasEntry.RESPONSABLE + " TEXT,"
                 + VacunasEntry.MES_APLICACION + " INTEGER,"
+                + VacunasEntry.APLICADO + " INTEGER,"
                 + "UNIQUE (" + VacunasEntry.ID + "),"
                 + "FOREIGN KEY (" + VacunasEntry.ID_HIJO + ") REFERENCES "
                 + HijosEntry.TABLE_NAME + "(" + HijosEntry.ID + "))"

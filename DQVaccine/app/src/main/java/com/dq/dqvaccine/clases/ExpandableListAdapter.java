@@ -9,9 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dq.dqvaccine.R;
+
+//TODO: Child debe ser List<Vacuna>
+//TODO: Cambiar list_item_vacunas.xml segun modelo de Samu
+//TODO: En GetChildView, el getChild deberia retornar Vacuna
+//TODO: En GetChildView, validar la imagen segun aplicado o no
+//TODO: En GetChildView, agregar los views segun list_item_vacunas.xml
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
@@ -54,6 +61,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.lblListItem);
 
         txtListChild.setText(childText);
+        ImageView imgListChild = (ImageView) convertView.findViewById(R.id.iv_vacunas);
+        imgListChild.setImageResource(R.drawable.googleg_color);
         return convertView;
     }
 
