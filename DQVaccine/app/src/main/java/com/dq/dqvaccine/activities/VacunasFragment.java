@@ -27,7 +27,6 @@ public class VacunasFragment extends Fragment {
     private static final String ARG_HIJO_ID = "hijoId";
     private int mHijoId;
 
-
     private DQbdHelper mDQbdHelper;
 
     private ExpandableListView mVacunasList;
