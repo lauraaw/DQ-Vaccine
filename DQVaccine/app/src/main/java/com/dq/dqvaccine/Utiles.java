@@ -12,21 +12,21 @@ public class Utiles {
 
     }
 
-    public String calcularFechaAAplicar(String dt, int dias) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+    public String calcularFechaAAplicar(String dt, int meses) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Calendar c = Calendar.getInstance();
         try {
             c.setTime(sdf.parse(dt));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        c.add(Calendar.DATE, dias);  // number of days to add
+        c.add(Calendar.MONTH, meses);  // number of months to add
         dt = sdf.format(c.getTime());  // dt is now the new date
         return dt;
     }
 
     public boolean vencido(String dt) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date fecha = new Date();
         try {
             fecha = sdf.parse(dt);
@@ -34,6 +34,6 @@ public class Utiles {
             e.printStackTrace();
         }
         Date hoy = new Date();
-        return fecha.after(hoy);
+        return fecha.before(hoy);
     }
 }

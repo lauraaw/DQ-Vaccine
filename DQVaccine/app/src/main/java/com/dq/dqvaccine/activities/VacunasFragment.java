@@ -109,16 +109,17 @@ public class VacunasFragment extends Fragment {
         @Override
         protected ArrayList<Vacuna> doInBackground(String... par) {
             Cursor cursor = mDQbdHelper.getVacunasByMes(par[0], par[1]);
-            System.out.println(mHijoId);
             Cursor cHIjo = mDQbdHelper.getHijoById(String.valueOf(mHijoId));
             cHIjo.moveToFirst();
+            Hijo hijo = new Hijo(cHIjo);
+            String fecha;
             ArrayList<Vacuna> mArrayList = new ArrayList<Vacuna>();
             for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 // The Cursor is now set to the right position
                 Vacuna v = new Vacuna(cursor);
                 Utiles ut = new Utiles();
-                Hijo hijo = new Hijo(cHIjo);
-                v.setFecha_apl(ut.calcularFechaAAplicar(hijo.getFecha_nac(), v.getMes_aplicacion()));
+                fecha = ut.calcularFechaAAplicar(hijo.getFecha_nac(), v.getMes_aplicacion());
+                v.setFecha_apl(fecha);
                 mArrayList.add(v);
             }
             return  mArrayList;
