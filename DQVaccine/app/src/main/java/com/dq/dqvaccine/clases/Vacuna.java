@@ -16,6 +16,7 @@ public class Vacuna {
     private String responsable;
     private int mes_aplicacion;
     private int aplicado;
+    private String fecha_apl;
 
     public Vacuna(int id, String nombre_vac, int id_hijo, String edad, int dosis, String fecha,
                   String lote, String responsable, int mes_aplicacion, int aplicado) {
@@ -94,4 +95,12 @@ public class Vacuna {
     public int getMes_aplicacion() {
         return mes_aplicacion;
     }
+
+    public void setFecha_apl(String fecha) {
+        this.fecha_apl = fecha;
+    }
+
+    public String getFecha_apl() { return fecha_apl;}
+
+    public int getAplicado() { return  aplicado;}
 }

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dq.dqvaccine.R;
+import com.dq.dqvaccine.Utiles;
 
 //TODO: Child debe ser List<Vacuna>
 //TODO: Cambiar list_item_vacunas.xml segun modelo de Samu
@@ -86,7 +87,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         txtListChild.setText("Responsable: " + child.getResponsable());
 
         ImageView imgListChild = (ImageView) convertView.findViewById(R.id.iv_vacunas);
-        imgListChild.setImageResource(R.drawable.googleg_color);
+        Utiles ut = new Utiles();
+        if(child.getAplicado() == 1) {
+            imgListChild.setImageResource(R.drawable.check_ok);
+        }
+        else if (ut.vencido(child.getFecha_apl())) {
+            imgListChild.setImageResource(R.drawable.no_check);
+        }
+        else {
+            imgListChild.setImageResource(R.drawable.no_yet_check);
+        }
         return convertView;
     }
 

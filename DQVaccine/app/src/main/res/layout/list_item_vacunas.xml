@@ -27,7 +27,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:scaleType="center"
-        app:srcCompat="@drawable/ic_account_circle"
+        app:srcCompat="@drawable/no_yet_check"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 

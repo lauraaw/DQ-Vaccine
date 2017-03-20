@@ -13,9 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import com.dq.dqvaccine.R;
+import com.dq.dqvaccine.Utiles;
 import com.dq.dqvaccine.clases.ExpandableListAdapter;
+import com.dq.dqvaccine.clases.Hijo;
 import com.dq.dqvaccine.clases.Vacuna;
-import com.dq.dqvaccine.data.DQContract;
 import com.dq.dqvaccine.data.DQbdHelper;
 
 import java.util.ArrayList;
@@ -108,10 +109,16 @@ public class VacunasFragment extends Fragment {
         @Override
         protected ArrayList<Vacuna> doInBackground(String... par) {
             Cursor cursor = mDQbdHelper.getVacunasByMes(par[0], par[1]);
+            System.out.println(mHijoId);
+            Cursor cHIjo = mDQbdHelper.getHijoById(String.valueOf(mHijoId));
+            cHIjo.moveToFirst();
             ArrayList<Vacuna> mArrayList = new ArrayList<Vacuna>();
             for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 // The Cursor is now set to the right position
                 Vacuna v = new Vacuna(cursor);
+                Utiles ut = new Utiles();
+                Hijo hijo = new Hijo(cHIjo);
+                v.setFecha_apl(ut.calcularFechaAAplicar(hijo.getFecha_nac(), v.getMes_aplicacion()));
                 mArrayList.add(v);
             }
             return  mArrayList;
@@ -174,5 +181,8 @@ public class VacunasFragment extends Fragment {
 
         listDataChild.put(listDataHeader.get(7), lista); // Header, Child data
     }
+
+
 }
+
 

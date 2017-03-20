@@ -204,6 +204,7 @@ public class DQbdHelper extends SQLiteOpenHelper {
                 " ", " ", " ", 48, 0));
 
         insertarTodo(sqLiteDatabase, 1);
+        insertarTodo(sqLiteDatabase, 4);
     }
 
     private void insertarTodo(SQLiteDatabase sqLiteDatabase, int i) {
