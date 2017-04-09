@@ -41,6 +41,11 @@
             android:name=".activities.VacunasActivity"
             android:label="@string/title_activity_vacunas"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <uses-permission android:name="android.permission.VIBRATE" />
+        <uses-permission android:name="android.permission.WAKE_LOCK" />
+        <receiver
+            android:name="com.dq.dqvaccine.clases.AlarmReceiver"
+            android:process=":remote" />
     </application>
 
 </manifest>

@@ -17,6 +17,7 @@ import android.widget.ListView;
 
 import com.dq.dqvaccine.R;
 import com.dq.dqvaccine.clases.HijosCursorAdapter;
+import com.dq.dqvaccine.clases.Notificacion;
 import com.dq.dqvaccine.data.DQContract.HijosEntry;
 import com.dq.dqvaccine.data.DQbdHelper;
 
@@ -62,7 +63,12 @@ public class HijosFragment extends Fragment {
         mDQbdHelper = new DQbdHelper(getActivity());
 
         loadHijos();
+        loadNotificaciones();
         return root;
+    }
+
+    private void loadNotificaciones() {
+        new Notificacion(getActivity(), "09/04/2017", 1);
     }
 
     /*private void showDetailScreen(int currentHijoId) {
