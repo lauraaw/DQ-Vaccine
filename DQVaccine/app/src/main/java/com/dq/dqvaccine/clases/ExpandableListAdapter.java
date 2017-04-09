@@ -16,10 +16,6 @@ import com.dq.dqvaccine.R;
 import com.dq.dqvaccine.Utiles;
 
 //TODO: Child debe ser List<Vacuna>
-//TODO: Cambiar list_item_vacunas.xml segun modelo de Samu
-//TODO: En GetChildView, el getChild deberia retornar Vacuna
-//TODO: En GetChildView, validar la imagen segun aplicado o no
-//TODO: En GetChildView, agregar los views segun list_item_vacunas.xml
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
@@ -50,7 +46,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final Vacuna child = (Vacuna) getChild(groupPosition, childPosition);
+        final Vacuna vacuna = (Vacuna) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -62,37 +58,39 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.lblListItem);
 
-        txtListChild.setText(child.getNombre_vac());
+        txtListChild.setText(vacuna.getNombre_vac());
 
         //Dosis
 
         txtListChild = (TextView) convertView.findViewById(R.id.tv_dosis);
-        txtListChild.setText("Dosis: " + String.valueOf(child.getDosis()));
+        txtListChild.setText("Dosis: " + String.valueOf(vacuna.getDosis()));
 
         //Fecha
 
         txtListChild = (TextView) convertView.findViewById(R.id.tv_fecha);
-        txtListChild.setText("Fecha: " + child.getFecha());
+        txtListChild.setText("Fecha: " + vacuna.getFecha());
 
         //Edad
         txtListChild = (TextView) convertView.findViewById(R.id.tv_edad);
-        txtListChild.setText("Edad: " + child.getEdad());
+        txtListChild.setText("Edad: " + vacuna.getEdad());
 
         //Lote
         txtListChild = (TextView) convertView.findViewById(R.id.tv_lote);
-        txtListChild.setText("Lote: " + child.getLote());
+        txtListChild.setText("Lote: " + vacuna.getLote());
 
         //Responsable
         txtListChild = (TextView) convertView.findViewById(R.id.tv_responsable);
-        txtListChild.setText("Responsable: " + child.getResponsable());
+        txtListChild.setText("Responsable: " + vacuna.getResponsable());
 
         ImageView imgListChild = (ImageView) convertView.findViewById(R.id.iv_vacunas);
         Utiles ut = new Utiles();
-        if(child.getAplicado() == 1) {
+        if(vacuna.getAplicado() == 1) {
             imgListChild.setImageResource(R.drawable.check_ok);
         }
-        else if (ut.vencido(child.getFecha_apl())) {
-            imgListChild.setImageResource(R.drawable.no_check);
+        //TODO: else if (ut.vencido()){
+        // imgListChild.setImageResource(R.drawable.no_check);}
+        else if (ut.enTiempo(vacuna.getFecha_apl())) {
+            imgListChild.setImageResource(R.drawable.no_yet_orange);
         }
         else {
             imgListChild.setImageResource(R.drawable.no_yet_check);

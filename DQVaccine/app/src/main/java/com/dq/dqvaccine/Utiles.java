@@ -25,7 +25,7 @@ public class Utiles {
         return dt;
     }
 
-    public boolean vencido(String dt) {
+    public boolean enTiempo(String dt) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date fecha = new Date();
         try {
