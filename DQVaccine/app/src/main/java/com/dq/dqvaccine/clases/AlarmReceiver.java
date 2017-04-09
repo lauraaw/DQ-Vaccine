@@ -9,8 +9,10 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
+import com.dq.dqvaccine.MainActivity;
 import com.dq.dqvaccine.R;
 import com.dq.dqvaccine.activities.HijosActivity;
+import com.dq.dqvaccine.activities.HijosDetalleActivity;
 import com.dq.dqvaccine.activities.VacunasActivity;
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -32,7 +34,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mBuilder.setAutoCancel(true);
         mNotificationManager.notify(1, mBuilder.build());
-        System.out.println("3");
     }
 }

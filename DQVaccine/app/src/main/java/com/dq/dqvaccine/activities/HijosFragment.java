@@ -104,8 +104,8 @@ public class HijosFragment extends Fragment {
         protected void onPostExecute(Cursor cursor) {
             if (cursor != null && cursor.getCount() > 0) {
                 mHijosAdapter.swapCursor(cursor);
-            } else {
-                // Mostrar empty state
+            } else if (cursor.isAfterLast()){
+                cursor.close();
             }
         }
 
