@@ -122,6 +122,7 @@ public class VacunasFragment extends Fragment {
                 v.setFecha_apl(fecha);
                 mArrayList.add(v);
             }
+            cHIjo.close();
             return  mArrayList;
         }
     }
