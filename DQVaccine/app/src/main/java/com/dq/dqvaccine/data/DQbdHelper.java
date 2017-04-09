@@ -13,10 +13,6 @@ import com.dq.dqvaccine.data.DQContract.HijosEntry;
 import com.dq.dqvaccine.data.DQContract.ResponsablesEntry;
 import com.dq.dqvaccine.data.DQContract.VacunasEntry;
 
-
-//TODO: Cargar datos de Vacunas
-//TODO: Crear nuevos Selects para las vacunas --- YA
-
 public class DQbdHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;

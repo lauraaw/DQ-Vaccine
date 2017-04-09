@@ -8,8 +8,6 @@ import android.widget.ImageView;
 
 import java.io.InputStream;
 
-//TODO: Hacer que no explote
-
 class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     ImageView bmImage;
 

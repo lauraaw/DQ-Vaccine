@@ -15,8 +15,6 @@ import android.widget.TextView;
 import com.dq.dqvaccine.R;
 import com.dq.dqvaccine.Utiles;
 
-//TODO: Child debe ser List<Vacuna>
-
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;

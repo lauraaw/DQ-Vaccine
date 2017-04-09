@@ -23,11 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-//TODO: Crear tantos DatosLoadTasks se necesiten segun mes_aplicacion -- YA, solo uno
-//TODO: En DatosLoadTask, hacer Vacuna(cursor) y add a ArrayList<Vacuna>
-//TODO: listDataChild debe ser List<Vacuna>
-//TODO: Poner boton de atras en el toolbar
-
 public class VacunasFragment extends Fragment {
 
     private static final String ARG_HIJO_ID = "hijoId";

@@ -1,14 +1,10 @@
 package com.dq.dqvaccine.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +13,6 @@ import android.widget.ListView;
 
 import com.dq.dqvaccine.R;
 import com.dq.dqvaccine.clases.HijosCursorAdapter;
-import com.dq.dqvaccine.clases.Notificacion;
 import com.dq.dqvaccine.data.DQContract.HijosEntry;
 import com.dq.dqvaccine.data.DQbdHelper;
 
@@ -53,7 +48,7 @@ public class HijosFragment extends Fragment {
                 Cursor currentItem = (Cursor) mHijosAdapter.getItem(i);
                 int currentHijoId = currentItem.getInt(
                         currentItem.getColumnIndex(HijosEntry.ID));
-                showDetailScreen(currentHijoId);
+                showVacunasScreen(currentHijoId);
             }
         });
 
@@ -63,21 +58,12 @@ public class HijosFragment extends Fragment {
         mDQbdHelper = new DQbdHelper(getActivity());
 
         loadHijos();
-        loadNotificaciones();
+
         return root;
     }
 
-    private void loadNotificaciones() {
-        new Notificacion(getActivity(), "09/04/2017", 1);
-    }
 
-    /*private void showDetailScreen(int currentHijoId) {
-        Intent intent = new Intent(getActivity(), HijosDetalleActivity.class);
-        intent.putExtra(HijosActivity.EXTRA_HIJO_ID, currentHijoId);
-        startActivity(intent);
-    }*/
-
-    private void showDetailScreen(int currentHijoId) {
+    private void showVacunasScreen(int currentHijoId) {
         Intent intent = new Intent(getActivity(), VacunasActivity.class);
         intent.putExtra(HijosActivity.EXTRA_HIJO_ID, currentHijoId);
         startActivity(intent);
