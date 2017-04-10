@@ -21,6 +21,10 @@ import com.dq.dqvaccine.clases.Notificacion;
 import com.dq.dqvaccine.data.DQContract.HijosEntry;
 import com.dq.dqvaccine.data.DQbdHelper;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+
 
 public class HijosFragment extends Fragment {
 
@@ -81,44 +85,63 @@ public class HijosFragment extends Fragment {
 
     private void loadNotificaciones() {
         Utiles util = new Utiles();
-        int[] meses = {0, 2, 4, 6, 12, 15, 18, 48};
-        /*Cursor cursor = mDQbdHelper.getAllHijos();
-        for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            Hijo hijo = new Hijo(cursor);
-            for (int i = 0; i < meses.length; i++) {
-                new Notificacion(getActivity(),
-                        util.calcularNotificacion(hijo.getFecha_nac(), i),
-                        hijo.getId());
-            }
-        }
-        cursor.close();*/
         Cursor cursor = mDQbdHelper.getHijoById("1");
+        ArrayList<Integer> meses = getMesesNoAplicados("1");
         cursor.moveToFirst();
         Hijo hijo = new Hijo(cursor);
-        for (int i = 0; i < meses.length; i++) {
-            String fecha = util.calcularFechaAAplicar(hijo.getFecha_nac(), meses[i]);
+        for (int i = 0; i < meses.size(); i++) {
+            String fecha = util.calcularFechaAAplicar(hijo.getFecha_nac(), meses.get(i));
             new Notificacion(getActivity(),
                     util.calcularNotificacion(fecha),
                     hijo.getId(),
                     hijo.getNombre() + " " + hijo.getApellido(),
-                    meses[i]);
-            System.out.println(fecha);
+                    meses.get(i));
         }
         cursor.close();
+
         cursor = mDQbdHelper.getHijoById("2");
+        meses = getMesesNoAplicados("2");
         cursor.moveToFirst();
         hijo = new Hijo(cursor);
-        for (int i = 0; i < meses.length; i++) {
-            String fecha = util.calcularFechaAAplicar(hijo.getFecha_nac(), meses[i]);
+        for (int i = 0; i < meses.size(); i++) {
+            String fecha = util.calcularFechaAAplicar(hijo.getFecha_nac(), meses.get(i));
             new Notificacion(getActivity(),
                     util.calcularNotificacion(fecha),
                     hijo.getId(),
                     hijo.getNombre() + " " + hijo.getApellido(),
-                    meses[i]);
-            System.out.println(fecha);
+                    meses.get(i));
         }
         cursor.close();
-        //new Notificacion(getActivity(), "09/04/2017", 1, 2);
+
+        cursor = mDQbdHelper.getHijoById("3");
+        meses = getMesesNoAplicados("3");
+        cursor.moveToFirst();
+        hijo = new Hijo(cursor);
+        for (int i = 0; i < meses.size(); i++) {
+            String fecha = util.calcularFechaAAplicar(hijo.getFecha_nac(), meses.get(i));
+            new Notificacion(getActivity(),
+                    util.calcularNotificacion(fecha),
+                    hijo.getId(),
+                    hijo.getNombre() + " " + hijo.getApellido(),
+                    meses.get(i));
+        }
+        cursor.close();
+    }
+
+    private ArrayList<Integer> getMesesNoAplicados(String idHijo) {
+        Cursor cursor = mDQbdHelper.getNoAplicadas(idHijo);
+        ArrayList<Integer> lista = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                lista.add(cursor.getInt(8));
+            } while (cursor.moveToNext());
+        }
+        HashSet<Integer> hs = new HashSet<Integer>(lista);
+        lista.clear();
+        lista.addAll(hs);
+
+        Collections.sort(lista);
+        return lista;
     }
 
 

@@ -344,4 +344,13 @@ public class DQbdHelper extends SQLiteOpenHelper {
                 , new String[]{vacunaMes, hijoId});
         return c;
     }
+
+    public Cursor getNoAplicadas(String hijoId) {
+        Cursor c = getReadableDatabase().rawQuery("SELECT * FROM "
+                        + VacunasEntry.TABLE_NAME + " WHERE " +
+                        VacunasEntry.APLICADO + " = ? AND " +
+                        VacunasEntry.ID_HIJO + " = ?"
+                , new String[]{"0", hijoId});
+        return c;
+    }
 }
