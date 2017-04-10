@@ -1,9 +1,11 @@
 package com.dq.dqvaccine.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +14,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.dq.dqvaccine.R;
+import com.dq.dqvaccine.Utiles;
+import com.dq.dqvaccine.clases.Hijo;
 import com.dq.dqvaccine.clases.HijosCursorAdapter;
+import com.dq.dqvaccine.clases.Notificacion;
 import com.dq.dqvaccine.data.DQContract.HijosEntry;
 import com.dq.dqvaccine.data.DQbdHelper;
 
@@ -59,7 +64,61 @@ public class HijosFragment extends Fragment {
 
         loadHijos();
 
+        //Crea las notificaciones solo la primera vez que corre la aplicacion
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        if (!prefs.getBoolean("firstTime", false)) {
+            // <---- run your one time code here
+            loadNotificaciones();
+
+            // mark first time has runned.
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("firstTime", true);
+            editor.commit();
+        }
+
         return root;
+    }
+
+    private void loadNotificaciones() {
+        Utiles util = new Utiles();
+        int[] meses = {0, 2, 4, 6, 12, 15, 18, 48};
+        /*Cursor cursor = mDQbdHelper.getAllHijos();
+        for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            Hijo hijo = new Hijo(cursor);
+            for (int i = 0; i < meses.length; i++) {
+                new Notificacion(getActivity(),
+                        util.calcularNotificacion(hijo.getFecha_nac(), i),
+                        hijo.getId());
+            }
+        }
+        cursor.close();*/
+        Cursor cursor = mDQbdHelper.getHijoById("1");
+        cursor.moveToFirst();
+        Hijo hijo = new Hijo(cursor);
+        for (int i = 0; i < meses.length; i++) {
+            String fecha = util.calcularFechaAAplicar(hijo.getFecha_nac(), meses[i]);
+            new Notificacion(getActivity(),
+                    util.calcularNotificacion(fecha),
+                    hijo.getId(),
+                    hijo.getNombre() + " " + hijo.getApellido(),
+                    meses[i]);
+            System.out.println(fecha);
+        }
+        cursor.close();
+        cursor = mDQbdHelper.getHijoById("2");
+        cursor.moveToFirst();
+        hijo = new Hijo(cursor);
+        for (int i = 0; i < meses.length; i++) {
+            String fecha = util.calcularFechaAAplicar(hijo.getFecha_nac(), meses[i]);
+            new Notificacion(getActivity(),
+                    util.calcularNotificacion(fecha),
+                    hijo.getId(),
+                    hijo.getNombre() + " " + hijo.getApellido(),
+                    meses[i]);
+            System.out.println(fecha);
+        }
+        cursor.close();
+        //new Notificacion(getActivity(), "09/04/2017", 1, 2);
     }
 
 

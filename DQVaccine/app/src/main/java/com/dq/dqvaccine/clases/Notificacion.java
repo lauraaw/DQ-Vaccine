@@ -12,11 +12,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static android.content.Context.ALARM_SERVICE;
 
 public class Notificacion {
 
-    public Notificacion(Context contexto, String dt, int hijoId) {
+    public Notificacion(Context contexto, String dt, int hijoId, String nombre, int mes) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Calendar fecha = Calendar.getInstance();
@@ -25,10 +26,14 @@ public class Notificacion {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        fecha.set(Calendar.HOUR_OF_DAY, 6);
+        System.out.println(fecha.getTime());
         Intent intent = new Intent(contexto, AlarmReceiver.class);
         intent.putExtra(HijosActivity.EXTRA_HIJO_ID, hijoId);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(contexto, 1, intent, 0);
+        intent.putExtra("mes", mes);
+        intent.putExtra("nombre", nombre);
+        intent.setAction(String.valueOf(hijoId)+String.valueOf(mes));
+        int random = (int)System.currentTimeMillis();
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(contexto, random, intent, FLAG_UPDATE_CURRENT);
 
         AlarmManager am = (AlarmManager)contexto.getSystemService(ALARM_SERVICE);
         am.set(AlarmManager.RTC_WAKEUP, fecha.getTimeInMillis(), pendingIntent);
