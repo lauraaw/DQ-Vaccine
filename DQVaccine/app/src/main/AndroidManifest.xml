@@ -48,6 +48,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <uses-permission android:name="android.permission.VIBRATE" />
         <uses-permission android:name="android.permission.WAKE_LOCK" />
+        <uses-permission android:name="android.permission.INTERNET"/>
         <receiver
             android:name="com.dq.dqvaccine.clases.AlarmReceiver"
             android:process=":remote" />

@@ -9,6 +9,7 @@ import com.dq.Usuarios;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -61,6 +62,22 @@ public class UsuariosFacadeREST extends AbstractFacade<Usuarios> {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Usuarios find(@PathParam("id") Integer id) {
         return super.find(id);
+    }
+    
+    @GET
+    @Path("/mail/{correo}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Usuarios findCorreo(@PathParam("correo") String correo) {
+        Usuarios u;
+        try {
+            u = (Usuarios) getEntityManager()
+                    .createQuery("SELECT u FROM Usuarios u WHERE u.correo = :correo")
+                    .setParameter("correo", correo).getSingleResult();
+        }
+        catch (NoResultException e) {
+            u = null;
+        }
+        return u;
     }
 
     @GET

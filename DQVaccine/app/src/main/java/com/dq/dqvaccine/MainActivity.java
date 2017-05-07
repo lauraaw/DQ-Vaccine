@@ -1,7 +1,10 @@
 package com.dq.dqvaccine;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dq.dqvaccine.activities.HijosActivity;
+import com.dq.dqvaccine.clases.Usuario;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -20,6 +24,12 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
+import org.apache.http.client.*;
 
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
@@ -31,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements
     private TextView VistaEstado;
     private ImageView VistaFoto;
     private ProgressDialog mProgressDialog;
+    private String correo;
+    private Usuario u;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +89,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void confirm() {
-        Intent confint = new Intent(this, HijosActivity.class);
-        startActivity(confint);
+        new Verificar().execute();
     }
 
     private void signOut() {
@@ -113,11 +125,12 @@ public class MainActivity extends AppCompatActivity implements
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
+            correo = acct.getEmail().toString();
+            System.out.println(correo);
             VistaEstado.setText(getString(R.string.usuario, acct.getDisplayName(), acct.getEmail()));
-            if (acct.getPhotoUrl() != null){
+            if (acct.getPhotoUrl() != null) {
                 new DownloadImageTask(VistaFoto).execute(acct.getPhotoUrl().toString());
-            }
-            else {
+            } else {
                 VistaFoto.setImageResource(R.drawable.ic_account_circle);
             }
             updateUI(true);
@@ -128,14 +141,13 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void updateUI(boolean b) {
-        if (b){
+        if (b) {
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
             findViewById(R.id.confirm_button).setVisibility(View.VISIBLE);
             findViewById(R.id.title_text).setVisibility(View.VISIBLE);
             findViewById(R.id.profile_pic).setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_button).setVisibility(View.GONE);
             findViewById(R.id.confirm_button).setVisibility(View.GONE);
@@ -186,4 +198,72 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    private void siguiente() {
+        Intent confint = new Intent(this, HijosActivity.class);
+        startActivity(confint);
+    }
+
+    private class Verificar extends AsyncTask<Void, Void, Boolean> {
+
+        private int idUsu;
+        private String nombUsu;
+        private String mailUsu;
+        AlertDialog alertDialog;
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        }
+
+        protected Boolean doInBackground(Void... params) {
+
+            boolean resul = true;
+
+            HttpClient httpClient = new DefaultHttpClient();
+
+            HttpGet del =
+                    new HttpGet("http://10.30.30.16:8084/DQ/webresources/com.dq.usuarios/mail/" + "correo");
+
+            del.setHeader("content-type", "application/json");
+
+            try {
+                HttpResponse resp = httpClient.execute(del);
+                String respStr = EntityUtils.toString(resp.getEntity());
+
+                JSONObject respJSON = new JSONObject(respStr);
+
+                idUsu = respJSON.getInt("id");
+                nombUsu = respJSON.getString("nombre");
+                mailUsu = respJSON.getString("correo");
+
+                System.out.println(nombUsu);
+            } catch (Exception ex) {
+                Log.e("ServicioRest", "Error!", ex);
+                resul = false;
+            }
+
+            return resul;
+        }
+
+        protected void onPostExecute(Boolean result) {
+
+            if (result) {
+                u = new Usuario(idUsu, mailUsu, nombUsu);
+                siguiente();
+            }
+            else{
+                alertDialog.setTitle("Error");
+                alertDialog.setMessage("Correo no encontrado en la base de datos");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+        } 
+
+
+    }
 }
