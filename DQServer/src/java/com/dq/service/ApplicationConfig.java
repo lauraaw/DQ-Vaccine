@@ -29,7 +29,9 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(com.dq.service.HijosFacadeREST.class);
         resources.add(com.dq.service.UsuariosFacadeREST.class);
+        resources.add(com.dq.service.VacunasFacadeREST.class);
     }
     
 }

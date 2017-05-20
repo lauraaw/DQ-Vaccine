@@ -48,7 +48,7 @@ public class Utiles {
             e.printStackTrace();
         }
         c.add(Calendar.DAY_OF_YEAR, -2);
-        dt = sdf.format(c.getTime());  // dt is now the new date
+        dt = sdf.format(c.getTime(  ));  // dt is now the new date
         System.out.println(dt);
         return dt;
     }

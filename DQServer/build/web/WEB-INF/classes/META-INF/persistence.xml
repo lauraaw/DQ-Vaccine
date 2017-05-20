@@ -3,6 +3,8 @@
   <persistence-unit name="DQPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.dq.Usuarios</class>
+    <class>com.dq.Hijos</class>
+    <class>com.dq.Vacunas</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/DQVaccine"/>

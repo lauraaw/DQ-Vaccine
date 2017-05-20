@@ -3,9 +3,11 @@ package com.dq.dqvaccine.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,9 +19,21 @@ import com.dq.dqvaccine.Utiles;
 import com.dq.dqvaccine.clases.ExpandableListAdapter;
 import com.dq.dqvaccine.clases.Hijo;
 import com.dq.dqvaccine.clases.Vacuna;
+import com.dq.dqvaccine.data.DQContract;
 import com.dq.dqvaccine.data.DQbdHelper;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,6 +55,7 @@ public class VacunasFragment extends Fragment {
         // Required empty public constructor
     }
 
+    //Se obtiene el id del hijo para mostrar sus vacunas
     public static VacunasFragment newInstance(int hijoId) {
         VacunasFragment fragment = new VacunasFragment();
         Bundle args = new Bundle();
@@ -103,21 +118,79 @@ public class VacunasFragment extends Fragment {
 
         @Override
         protected ArrayList<Vacuna> doInBackground(String... par) {
-            Cursor cursor = mDQbdHelper.getVacunasByMes(par[0], par[1]);
-            Cursor cHIjo = mDQbdHelper.getHijoById(String.valueOf(mHijoId));
-            cHIjo.moveToFirst();
-            Hijo hijo = new Hijo(cHIjo);
+
             String fecha;
             ArrayList<Vacuna> mArrayList = new ArrayList<Vacuna>();
-            for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-                // The Cursor is now set to the right position
-                Vacuna v = new Vacuna(cursor);
-                Utiles ut = new Utiles();
-                fecha = ut.calcularFechaAAplicar(hijo.getFecha_nac(), v.getMes_aplicacion());
-                v.setFecha_apl(fecha);
-                mArrayList.add(v);
+            HttpClient httpClient = new DefaultHttpClient();
+
+            System.out.println("Aca no es");
+            System.out.println(par[0]);
+            System.out.println(par[1]);
+            HttpGet del =
+                    new HttpGet("http://10.30.30.16:8084/DQ/webresources/com.dq.vacunas/vacunasmes/" + par[1] + "/" + par[0]);
+
+            del.setHeader("content-type", "application/json");
+
+            try {
+                HttpResponse resp = httpClient.execute(del);
+                String respStr = EntityUtils.toString(resp.getEntity());
+
+                JSONArray jArray = new JSONArray(respStr);
+                if (jArray != null) {
+                    System.out.println("Aca tampoco");
+                    for (int i = 0; i < jArray.length(); i++) {
+                        JSONObject jObject = jArray.getJSONObject(i);
+
+                        int idHijo, id, dosis, mes, aplicado;
+                        String nombre, edad, fecha_apl, lote, responsable;
+
+                        idHijo = jObject.getInt("VacunasPK.idHijo");
+                        id = jObject.getInt("VacunasPK.idVacuna");
+                        nombre = jObject.getString("nombre_vac");
+
+                        if (jObject.isNull("edad")){ edad = " "; }
+                        else { edad = jObject.getString("edad"); }
+
+                        dosis = jObject.getInt("dosis");
+
+                        if (jObject.isNull("fecha")){ fecha_apl = " "; }
+                        else { fecha_apl = jObject.getString("fecha"); }
+
+                        if (jObject.isNull("lote")) { lote = " ";}
+                        else { lote = jObject.getString("lote"); }
+
+                        if (jObject.isNull("responsable")) { responsable = " "; }
+                        else { responsable = jObject.getString("responsable"); }
+
+                        mes = jObject.getInt("mesAplicacion");
+                        aplicado = jObject.getInt("aplicado");
+
+                        Vacuna v = new Vacuna(id, nombre, idHijo, edad, dosis, fecha_apl, lote, responsable, mes, aplicado);
+
+                        Utiles ut = new Utiles();
+
+                        del =
+                                new HttpGet("http://10.30.30.16:8084/DQ/webresources/com.dq.hijos/fecha/" + mHijoId);
+                        resp = httpClient.execute(del);
+                        respStr = EntityUtils.toString(resp.getEntity());
+                        jObject = new JSONObject(respStr);
+                        String dt = jObject.getString("value");
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        Date date = new Date();
+                        try {
+                            date = sdf.parse(dt);
+                            System.out.println(date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        fecha = ut.calcularFechaAAplicar(sdf.format(date), v.getMes_aplicacion());
+                        v.setFecha_apl(fecha);
+                        mArrayList.add(v);
+                    }
+                }
+            } catch (Exception ex) {
+                Log.e("ServicioRest", "Error!", ex);
             }
-            cHIjo.close();
             return  mArrayList;
         }
     }

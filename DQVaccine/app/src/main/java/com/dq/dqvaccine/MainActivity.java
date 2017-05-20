@@ -35,20 +35,24 @@ public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
 
-    private GoogleApiClient client;
     private static final String TAG = "InicioSesion";
     private static final int RC_SIGN_IN = 9001;
+    public static final String EXTRA_USUARIO_ID = "extra_usuario_id";   //Extra para HijosActivity
+    private GoogleApiClient client;
     private TextView VistaEstado;
     private ImageView VistaFoto;
     private ProgressDialog mProgressDialog;
-    private String correo;
     private Usuario u;
+    private String correo;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Vistas de texto e imagen
         VistaEstado = (TextView) findViewById(R.id.title_text);
         VistaFoto = (ImageView) findViewById(R.id.profile_pic);
 
@@ -73,41 +77,6 @@ public class MainActivity extends AppCompatActivity implements
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.sign_in_button:
-                signIn();
-                break;
-            case R.id.sign_out_button:
-                signOut();
-                break;
-            case R.id.confirm_button:
-                confirm();
-                break;
-        }
-    }
-
-    private void confirm() {
-        new Verificar().execute();
-    }
-
-    private void signOut() {
-        Auth.GoogleSignInApi.signOut(client).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        // [START_EXCLUDE]
-                        updateUI(false);
-                        // [END_EXCLUDE]
-                    }
-                });
-    }
-
-    private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(client);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -125,8 +94,8 @@ public class MainActivity extends AppCompatActivity implements
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            correo = acct.getEmail().toString();
-            System.out.println(correo);
+            correo = acct.getEmail().toString();    //Correo para buscar en la base de datos
+            //Muestra los datos del usuario ingresado
             VistaEstado.setText(getString(R.string.usuario, acct.getDisplayName(), acct.getEmail()));
             if (acct.getPhotoUrl() != null) {
                 new DownloadImageTask(VistaFoto).execute(acct.getPhotoUrl().toString());
@@ -135,24 +104,7 @@ public class MainActivity extends AppCompatActivity implements
             }
             updateUI(true);
         } else {
-            // Signed out, show unauthenticated UI.
             updateUI(false);
-        }
-    }
-
-    private void updateUI(boolean b) {
-        if (b) {
-            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-            findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.confirm_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.title_text).setVisibility(View.VISIBLE);
-            findViewById(R.id.profile_pic).setVisibility(View.VISIBLE);
-        } else {
-            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.sign_out_button).setVisibility(View.GONE);
-            findViewById(R.id.confirm_button).setVisibility(View.GONE);
-            findViewById(R.id.title_text).setVisibility(View.GONE);
-            findViewById(R.id.profile_pic).setVisibility(View.GONE);
         }
     }
 
@@ -182,6 +134,72 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    //Cuando hace clic en uno de los botones
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.sign_in_button:   //Iniciar sesion
+                signIn();
+                break;
+            case R.id.sign_out_button:  //Cerrar sesion
+                signOut();
+                break;
+            case R.id.confirm_button:   //confirmar
+                confirm();
+                break;
+        }
+    }
+
+    private void confirm() {
+        new Verificar().execute();
+    }   //Confirmar verifica si esta en la bd
+
+    //Despues de verificar, pasa a la siguiente actividad, enviando como parametro
+    //el id del usuario
+    private void siguiente() {
+        Intent confint = new Intent(this, HijosActivity.class);
+        confint.putExtra(EXTRA_USUARIO_ID, u.getId());
+        startActivity(confint);
+    }
+
+    //Cierra sesion
+    private void signOut() {
+        Auth.GoogleSignInApi.signOut(client).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        // [START_EXCLUDE]
+                        updateUI(false);
+                        // [END_EXCLUDE]
+                    }
+                });
+    }
+
+    //Inicia sesion
+    private void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(client);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    //Se actualiza la visibilidad de las vistas (texto, imagen, botones)
+    //segun se inicie, cierre sesion.
+    private void updateUI(boolean b) {
+        if (b) {
+            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+            findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.confirm_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.title_text).setVisibility(View.VISIBLE);
+            findViewById(R.id.profile_pic).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.sign_out_button).setVisibility(View.GONE);
+            findViewById(R.id.confirm_button).setVisibility(View.GONE);
+            findViewById(R.id.title_text).setVisibility(View.GONE);
+            findViewById(R.id.profile_pic).setVisibility(View.GONE);
+        }
+    }
+
+
     private void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
@@ -198,19 +216,16 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private void siguiente() {
-        Intent confint = new Intent(this, HijosActivity.class);
-        startActivity(confint);
-    }
-
     private class Verificar extends AsyncTask<Void, Void, Boolean> {
 
+        //Datos de los usuarios que se obtendran de la bd
         private int idUsu;
         private String nombUsu;
         private String mailUsu;
         AlertDialog alertDialog;
 
         protected void onPreExecute() {
+            //Alerta en caso que no se encuentre en la bd
             super.onPreExecute();
             alertDialog = new AlertDialog.Builder(MainActivity.this).create();
         }
@@ -221,8 +236,9 @@ public class MainActivity extends AppCompatActivity implements
 
             HttpClient httpClient = new DefaultHttpClient();
 
+            //Servicio rest
             HttpGet del =
-                    new HttpGet("http://10.30.30.16:8084/DQ/webresources/com.dq.usuarios/mail/" + "correo");
+                    new HttpGet("http://10.30.30.16:8084/DQ/webresources/com.dq.usuarios/mail/" + correo);
 
             del.setHeader("content-type", "application/json");
 
@@ -230,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements
                 HttpResponse resp = httpClient.execute(del);
                 String respStr = EntityUtils.toString(resp.getEntity());
 
+                //Se obtiene el JSON del usuario
                 JSONObject respJSON = new JSONObject(respStr);
 
                 idUsu = respJSON.getInt("id");
@@ -250,8 +267,10 @@ public class MainActivity extends AppCompatActivity implements
             if (result) {
                 u = new Usuario(idUsu, mailUsu, nombUsu);
                 siguiente();
+                //Si no encontro ningun error, pasa a la siguiente actividad
             }
             else{
+                //
                 alertDialog.setTitle("Error");
                 alertDialog.setMessage("Correo no encontrado en la base de datos");
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",

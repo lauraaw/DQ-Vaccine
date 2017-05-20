@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import com.dq.dqvaccine.MainActivity;
 import com.dq.dqvaccine.R;
 
 //TODO: Crear las notificaciones
@@ -22,8 +23,10 @@ public class HijosActivity extends AppCompatActivity {
         HijosFragment fragment = (HijosFragment)
                 getSupportFragmentManager().findFragmentById(R.id.hijos_container);
 
+        int id = getIntent().getIntExtra(MainActivity.EXTRA_USUARIO_ID, 0);
+
         if (fragment == null) {
-            fragment = HijosFragment.newInstance();
+            fragment = HijosFragment.newInstance(id);
             getSupportFragmentManager().beginTransaction().add(R.id.hijos_container, fragment).commit();
         }
 

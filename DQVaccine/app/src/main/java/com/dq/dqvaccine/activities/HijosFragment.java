@@ -1,18 +1,23 @@
 package com.dq.dqvaccine.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.dq.dqvaccine.MainActivity;
 import com.dq.dqvaccine.R;
 import com.dq.dqvaccine.Utiles;
 import com.dq.dqvaccine.clases.Hijo;
@@ -20,6 +25,14 @@ import com.dq.dqvaccine.clases.HijosCursorAdapter;
 import com.dq.dqvaccine.clases.Notificacion;
 import com.dq.dqvaccine.data.DQContract.HijosEntry;
 import com.dq.dqvaccine.data.DQbdHelper;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,14 +45,30 @@ public class HijosFragment extends Fragment {
 
     private ListView mHijosList;
     private HijosCursorAdapter mHijosAdapter;
+    private int mUsuarioId;
 
 
     public HijosFragment() {
         // Required empty public constructor
     }
 
-    public static HijosFragment newInstance() {
-        return new HijosFragment();
+    //Se obtiene el id del usuario para mostrar a sus hijos
+    public static HijosFragment newInstance(int usuarioId) {
+        HijosFragment fragment = new HijosFragment();
+        Bundle args = new Bundle();
+        args.putInt(MainActivity.EXTRA_USUARIO_ID, usuarioId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            mUsuarioId = getArguments().getInt(MainActivity.EXTRA_USUARIO_ID);
+        }
+
     }
 
     @Override
@@ -51,27 +80,23 @@ public class HijosFragment extends Fragment {
         mHijosAdapter = new HijosCursorAdapter(getActivity(), null);
         mHijosList.setAdapter(mHijosAdapter);
 
+        //Se obtiene el id del hijo presionado
         mHijosList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Cursor currentItem = (Cursor) mHijosAdapter.getItem(i);
                 int currentHijoId = currentItem.getInt(
-                        currentItem.getColumnIndex(HijosEntry.ID));
+                        currentItem.getColumnIndex("_id"));
                 showVacunasScreen(currentHijoId);
             }
         });
-
-
-        getActivity().deleteDatabase(DQbdHelper.DATABASE_NAME);
-
-        mDQbdHelper = new DQbdHelper(getActivity());
 
         loadHijos();
 
         //Crea las notificaciones solo la primera vez que corre la aplicacion
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         if (!prefs.getBoolean("firstTime", false)) {
-            // <---- run your one time code here
+            // one time code
             loadNotificaciones();
 
             // mark first time has runned.
@@ -83,6 +108,7 @@ public class HijosFragment extends Fragment {
         return root;
     }
 
+    //TODO: CAMBIAR PARA QUE SEA SOLO LOS HIJOS QUE CORRESPONDE
     private void loadNotificaciones() {
         Utiles util = new Utiles();
         Cursor cursor = mDQbdHelper.getHijoById("1");
@@ -161,22 +187,89 @@ public class HijosFragment extends Fragment {
 
     }
 
-    private class HijosLoadTask extends AsyncTask<Void, Void, Cursor> {
+    private class HijosLoadTask extends AsyncTask<Void, Void, Wrapper> {
 
-        @Override
-        protected Cursor doInBackground(Void... voids) {
-            return mDQbdHelper.getAllHijos();
+
+        AlertDialog alertDialog;
+
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            alertDialog = new AlertDialog.Builder(getActivity()).create();
         }
 
-        @Override
-        protected void onPostExecute(Cursor cursor) {
-            if (cursor != null && cursor.getCount() > 0) {
-                mHijosAdapter.swapCursor(cursor);
-            } else if (cursor.isAfterLast()){
-                cursor.close();
+        protected Wrapper doInBackground(Void... params) {
+
+            boolean resul = true;
+
+            MatrixCursor mc = new MatrixCursor(new String[] {"_id", HijosEntry.NOMBRE, HijosEntry.APELLIDO});
+
+            HttpClient httpClient = new DefaultHttpClient();
+
+            HttpGet del =
+                    new HttpGet("http://10.30.30.16:8084/DQ/webresources/com.dq.hijos/hijos/" + mUsuarioId);
+
+            del.setHeader("content-type", "application/json");
+
+
+            try {
+                HttpResponse resp = httpClient.execute(del);
+                String respStr = EntityUtils.toString(resp.getEntity());
+
+                JSONArray jArray = new JSONArray(respStr);
+                if (jArray != null) {
+                    for (int i = 0; i < jArray.length(); i++) {
+                        JSONObject jObject = jArray.getJSONObject(i);
+                        int id = jObject.getInt("idHijo");
+                        String nombre = jObject.getString("nombre");
+                        String apellido = jObject.getString("apellido");
+                        mc.addRow(new Object[] {id, nombre, apellido});
+                    }
+                }
+                else {
+                    resul = false;
+                }
+            } catch (Exception ex) {
+                Log.e("ServicioRest", "Error!", ex);
+                resul = false;
+            }
+
+            Wrapper w = new Wrapper();
+            w.cursor = mc;
+            w.result = resul;
+            return w;
+        }
+
+        protected void onPostExecute(Wrapper w) {
+
+            if (w.result) {
+                if (w.cursor != null && w.cursor.getCount() > 0) {
+                    mHijosAdapter.swapCursor(w.cursor);
+                } else if (w.cursor.isAfterLast()){
+                    w.cursor.close();
+                }
+            }
+            else{
+                alertDialog.setTitle("Error");
+                alertDialog.setMessage("Correo no encontrado en la base de datos");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
             }
         }
 
 
-    }}
+    }
+
+    public class Wrapper
+    {
+        public Boolean result;
+        public Cursor cursor;
+    }
+
+}
 
