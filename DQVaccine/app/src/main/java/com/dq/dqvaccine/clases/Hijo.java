@@ -19,20 +19,13 @@ public class Hijo {
     private String departamento;
     private String municipio;
     private String barrio;
-    private String referencia;
-    private String nombre_resp;
-    private String tel;
-    private String seguro;
-    private String alergias;
-    private int id_resp;
+    private int id_usuario;
 
     public Hijo(int id, int ci, String nombre, String apellido,
                  String fecha_nac, String lugar_nac, String sexo,
                  String nacionalidad, String direccion,
                  String departamento, String municipio,
-                 String barrio, String referencia,
-                 String nombre_resp, String tel,
-                 String seguro, String alergias, int id_resp){
+                 String barrio, int id_usuario){
         this.id = id;
         this.ci = ci;
         this.nombre = nombre;
@@ -45,16 +38,18 @@ public class Hijo {
         this.departamento = departamento;
         this.municipio = municipio;
         this.barrio = barrio;
-        this.referencia = referencia;
-        this.nombre_resp = nombre_resp;
-        this.tel = tel;
-        this.seguro = seguro;
-        this.alergias = alergias;
-        this.id_resp = id_resp;
+        this.id_usuario = id_usuario;
+    }
+
+    public Hijo(int id, String nombre, String apellido, String fecha_nac) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.fecha_nac = fecha_nac;
     }
 
     public Hijo(Cursor cursor) {
-        id = cursor.getInt(cursor.getColumnIndex(HijosEntry.ID));
+        id = cursor.getInt(cursor.getColumnIndex("_id"));
         ci = cursor.getInt(cursor.getColumnIndex(HijosEntry.CI));
         nombre = cursor.getString(cursor.getColumnIndex(HijosEntry.NOMBRE));
         apellido = cursor.getString(cursor.getColumnIndex(HijosEntry.APELLIDO));
@@ -66,12 +61,7 @@ public class Hijo {
         departamento = cursor.getString(cursor.getColumnIndex(HijosEntry.DEPARTAMENTO));
         municipio = cursor.getString(cursor.getColumnIndex(HijosEntry.MUNICIPIO));
         barrio = cursor.getString(cursor.getColumnIndex(HijosEntry.BARRIO));
-        referencia = cursor.getString(cursor.getColumnIndex(HijosEntry.REFERENCIA));
-        nombre_resp = cursor.getString(cursor.getColumnIndex(HijosEntry.NOMBRE_RESPONSABLE));
-        tel = cursor.getString(cursor.getColumnIndex(HijosEntry.TEL));
-        seguro = cursor.getString(cursor.getColumnIndex(HijosEntry.SEGURO));
-        alergias = cursor.getString(cursor.getColumnIndex(HijosEntry.ALERGIA));
-        id_resp = cursor.getInt(cursor.getColumnIndex(HijosEntry.ID_RESP));
+        id_usuario = cursor.getInt(cursor.getColumnIndex(HijosEntry.ID_USUARIO));
     }
 
     public ContentValues toContentValues() {
@@ -88,12 +78,6 @@ public class Hijo {
         values.put(HijosEntry.DEPARTAMENTO, departamento);
         values.put(HijosEntry.MUNICIPIO, municipio);
         values.put(HijosEntry.BARRIO, barrio);
-        values.put(HijosEntry.REFERENCIA, referencia);
-        values.put(HijosEntry.NOMBRE_RESPONSABLE, nombre_resp);
-        values.put(HijosEntry.TEL, tel);
-        values.put(HijosEntry.SEGURO, seguro);
-        values.put(HijosEntry.ALERGIA, alergias);
-        values.put(HijosEntry.ID_RESP, id_resp);
         return values;
     }
 
@@ -145,25 +129,5 @@ public class Hijo {
         return barrio;
     }
 
-    public String getReferencia() {
-        return referencia;
-    }
-
-    public String getNombre_resp() {
-        return nombre_resp;
-    }
-
-    public String getTel() {
-        return tel;
-    }
-
-    public String getSeguro() {
-        return seguro;
-    }
-
-    public String getAlergias() {
-        return alergias;
-    }
-
-    public int getId_resp() { return id_resp;}
+    public int getId_usuario() { return id_usuario;}
 }

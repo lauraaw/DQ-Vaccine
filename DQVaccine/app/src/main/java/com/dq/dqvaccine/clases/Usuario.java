@@ -1,9 +1,5 @@
 package com.dq.dqvaccine.clases;
 
-/**
- * Created by Laura on 5/6/2017.
- */
-
 public class Usuario {
 
     private int id;

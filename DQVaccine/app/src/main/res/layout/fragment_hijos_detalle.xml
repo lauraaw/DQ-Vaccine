@@ -138,21 +138,8 @@
         android:id="@+id/tv_direccion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        tools:text=" " />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="Alergias"
-        android:textColor="?colorPrimary" />
-
-    <TextView
-        android:id="@+id/tv_alergia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text=" " />
+
 </LinearLayout>

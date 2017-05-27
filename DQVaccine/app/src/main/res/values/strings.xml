@@ -3,7 +3,7 @@
     <string name="usuario" formatted="false">Usuario: \n%1$s \n%2$s </string>
     <string name="loading">Loading…</string>
 
-    <string name="title_activity_hijos_detalle">Detalle</string>
+    <string name="title_activity_hijos_detalle"> </string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

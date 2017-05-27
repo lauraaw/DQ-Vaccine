@@ -2,8 +2,6 @@ package com.dq.dqvaccine.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,12 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import com.dq.dqvaccine.R;
-import com.dq.dqvaccine.Utiles;
 import com.dq.dqvaccine.clases.ExpandableListAdapter;
-import com.dq.dqvaccine.clases.Hijo;
 import com.dq.dqvaccine.clases.Vacuna;
-import com.dq.dqvaccine.data.DQContract;
-import com.dq.dqvaccine.data.DQbdHelper;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -30,10 +24,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,8 +32,6 @@ public class VacunasFragment extends Fragment {
 
     private static final String ARG_HIJO_ID = "hijoId";
     private int mHijoId;
-
-    private DQbdHelper mDQbdHelper;
 
     private ExpandableListView mVacunasList;
     private ExpandableListAdapter mVacunasAdapter;
@@ -69,10 +58,7 @@ public class VacunasFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_vacunas, container, false);
         mVacunasList = (ExpandableListView) root.findViewById(R.id.lvExp);
-        mDQbdHelper = new DQbdHelper(getActivity());
-        prepareListData();
-        mVacunasAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
-        mVacunasList.setAdapter(mVacunasAdapter);
+        preparar();
 
         return root;
     }
@@ -114,144 +100,126 @@ public class VacunasFragment extends Fragment {
         }
     }
 
-    private class DatosLoadTask extends AsyncTask<String, Void, ArrayList> {
+    private void preparar() {
+        new CargarVacunasTask().execute();
+    }
+
+    private class CargarVacunasTask extends AsyncTask<Object, Object, Boolean> {
+
 
         @Override
-        protected ArrayList<Vacuna> doInBackground(String... par) {
+        protected Boolean doInBackground(Object... par) {
 
-            String fecha;
-            ArrayList<Vacuna> mArrayList = new ArrayList<Vacuna>();
             HttpClient httpClient = new DefaultHttpClient();
+            HttpResponse resp;
+            String respStr;
 
-            System.out.println("Aca no es");
-            System.out.println(par[0]);
-            System.out.println(par[1]);
-            HttpGet del =
-                    new HttpGet("http://10.30.30.16:8084/DQ/webresources/com.dq.vacunas/vacunasmes/" + par[1] + "/" + par[0]);
+            listDataHeader = new ArrayList<String>();
+            listDataChild = new HashMap<String, List<Vacuna>>();
 
-            del.setHeader("content-type", "application/json");
+            listDataHeader.add("Al nacer");
 
+            listDataHeader.add("Dos meses");
+            listDataHeader.add("Cuatro meses");
+            listDataHeader.add("Seis meses");
+            listDataHeader.add("Doce meses");
+            listDataHeader.add("Quince meses");
+            listDataHeader.add("Dieciocho meses");
+            listDataHeader.add("Cuarenta y ocho meses");
             try {
-                HttpResponse resp = httpClient.execute(del);
-                String respStr = EntityUtils.toString(resp.getEntity());
+                HttpGet del =
+                        new HttpGet("http://10.30.30.16:8084/DQ/webresources/com.dq.vacunas/vacunas/" + mHijoId);
 
-                JSONArray jArray = new JSONArray(respStr);
-                if (jArray != null) {
-                    System.out.println("Aca tampoco");
-                    for (int i = 0; i < jArray.length(); i++) {
-                        JSONObject jObject = jArray.getJSONObject(i);
+                resp = httpClient.execute(del);
+                respStr = EntityUtils.toString(resp.getEntity());
 
-                        int idHijo, id, dosis, mes, aplicado;
-                        String nombre, edad, fecha_apl, lote, responsable;
+                listDataChild.put(listDataHeader.get(0), recorrer(respStr, 0));
 
-                        idHijo = jObject.getInt("VacunasPK.idHijo");
-                        id = jObject.getInt("VacunasPK.idVacuna");
-                        nombre = jObject.getString("nombre_vac");
+                listDataChild.put(listDataHeader.get(1), recorrer(respStr, 2));
 
-                        if (jObject.isNull("edad")){ edad = " "; }
-                        else { edad = jObject.getString("edad"); }
+                listDataChild.put(listDataHeader.get(2), recorrer(respStr, 4));
 
-                        dosis = jObject.getInt("dosis");
+                listDataChild.put(listDataHeader.get(3), recorrer(respStr, 6));
 
-                        if (jObject.isNull("fecha")){ fecha_apl = " "; }
-                        else { fecha_apl = jObject.getString("fecha"); }
+                listDataChild.put(listDataHeader.get(4), recorrer(respStr, 12));
 
-                        if (jObject.isNull("lote")) { lote = " ";}
-                        else { lote = jObject.getString("lote"); }
+                listDataChild.put(listDataHeader.get(5), recorrer(respStr, 15));
 
-                        if (jObject.isNull("responsable")) { responsable = " "; }
-                        else { responsable = jObject.getString("responsable"); }
+                listDataChild.put(listDataHeader.get(6), recorrer(respStr, 18));
 
-                        mes = jObject.getInt("mesAplicacion");
-                        aplicado = jObject.getInt("aplicado");
-
-                        Vacuna v = new Vacuna(id, nombre, idHijo, edad, dosis, fecha_apl, lote, responsable, mes, aplicado);
-
-                        Utiles ut = new Utiles();
-
-                        del =
-                                new HttpGet("http://10.30.30.16:8084/DQ/webresources/com.dq.hijos/fecha/" + mHijoId);
-                        resp = httpClient.execute(del);
-                        respStr = EntityUtils.toString(resp.getEntity());
-                        jObject = new JSONObject(respStr);
-                        String dt = jObject.getString("value");
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                        Date date = new Date();
-                        try {
-                            date = sdf.parse(dt);
-                            System.out.println(date);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        fecha = ut.calcularFechaAAplicar(sdf.format(date), v.getMes_aplicacion());
-                        v.setFecha_apl(fecha);
-                        mArrayList.add(v);
-                    }
-                }
-            } catch (Exception ex) {
-                Log.e("ServicioRest", "Error!", ex);
+                listDataChild.put(listDataHeader.get(7), recorrer(respStr, 48));
+            } catch (Exception e) {
+                Log.e("ServicioRest", "Error!", e);
             }
-            return  mArrayList;
+
+            return true;
+        }
+
+        protected void onPostExecute(Boolean t){
+            mVacunasAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+            mVacunasList.setAdapter(mVacunasAdapter);
         }
     }
 
 
+    public ArrayList<Vacuna> recorrer(String json, int month) {
+        JSONObject jObject;
+        JSONArray jArray = null;
+        ArrayList<Vacuna> mArrayList = new ArrayList<Vacuna>();
+        int idHijo, id, dosis, mes, aplicado;
+        String nombre, edad, fecha_apl, lote, responsable, fecha;
+        try {
+            jArray = new JSONArray(json);
+            if (jArray != null) {
+                for (int i = 0; i < jArray.length(); i++) {
+                    jObject = jArray.getJSONObject(i);
+                    mes = jObject.getInt("mesAplicacion");
 
-    private void prepareListData() {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<Vacuna>>();
+                    if (mes == month) {
+                        idHijo = jObject.getJSONObject("vacunasPK").getInt("idHijo");
+                        id = jObject.getJSONObject("vacunasPK").getInt("idVacuna");
+                        nombre = jObject.getString("nombreVac");
 
-        // Adding child data
-        listDataHeader.add("Al nacer");
-        listDataHeader.add("Dos meses");
-        listDataHeader.add("Cuatro meses");
-        listDataHeader.add("Seis meses");
-        listDataHeader.add("Doce meses");
-        listDataHeader.add("Quince meses");
-        listDataHeader.add("Dieciocho meses");
-        listDataHeader.add("Cuarenta y ocho meses");
+                        if (jObject.isNull("edad")) {
+                            edad = " ";
+                        } else {
+                            edad = jObject.getString("edad");
+                        }
 
-        // Adding child data
-        List<Vacuna> lista = new DatosLoadTask().doInBackground("0", String.valueOf(mHijoId));
+                        dosis = jObject.getInt("dosis");
 
-        listDataChild.put(listDataHeader.get(0), lista); // Header, Child data
+                        if (jObject.isNull("fecha")) {
+                            fecha = " ";
+                        } else {
+                            fecha = jObject.getString("fecha");
+                        }
 
-        //--------
-        lista = new DatosLoadTask().doInBackground("2", String.valueOf(mHijoId));
+                        if (jObject.isNull("lote")) {
+                            lote = " ";
+                        } else {
+                            lote = jObject.getString("lote");
+                        }
 
-        listDataChild.put(listDataHeader.get(1), lista); // Header, Child data
+                        if (jObject.isNull("responsable")) {
+                            responsable = " ";
+                        } else {
+                            responsable = jObject.getString("responsable");
+                        }
 
-        //--------
-        lista = new DatosLoadTask().doInBackground("4", String.valueOf(mHijoId));
+                        aplicado = jObject.getInt("aplicado");
+                        fecha_apl = jObject.getString("fechaApl");
 
-        listDataChild.put(listDataHeader.get(2), lista); // Header, Child data
+                        Vacuna v = new Vacuna(id, nombre, idHijo, edad, dosis, fecha, lote, responsable, mes, aplicado, fecha_apl);
 
-        //--------
-        lista = new DatosLoadTask().doInBackground("6", String.valueOf(mHijoId));
-
-        listDataChild.put(listDataHeader.get(3), lista); // Header, Child data
-
-        //--------
-        lista = new DatosLoadTask().doInBackground("12", String.valueOf(mHijoId));
-
-        listDataChild.put(listDataHeader.get(4), lista); // Header, Child data
-
-        //--------
-        lista = new DatosLoadTask().doInBackground("15", String.valueOf(mHijoId));
-
-        listDataChild.put(listDataHeader.get(5), lista); // Header, Child data
-
-        //--------
-        lista = new DatosLoadTask().doInBackground("18", String.valueOf(mHijoId));
-
-        listDataChild.put(listDataHeader.get(6), lista); // Header, Child data
-
-        //--------
-        lista = new DatosLoadTask().doInBackground("48", String.valueOf(mHijoId));
-
-        listDataChild.put(listDataHeader.get(7), lista); // Header, Child data
+                        mArrayList.add(v);
+                    }
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mArrayList;
     }
-
 
 }
 

@@ -59,14 +59,14 @@ public class Hijos implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "apellido")
     private String apellido;
-    @Column(name = "fecha_nac")
-    @Temporal(TemporalType.DATE)
-    private Date fechaNac;
     @Size(max = 2147483647)
+    @Column(name = "fecha_nac")
+    private String fechaNac;
     @Column(name = "lugar_nac")
     private String lugarNac;
+    @Size(max = 2147483647)
     @Column(name = "sexo")
-    private Character sexo;
+    private String sexo;
     @Size(max = 2147483647)
     @Column(name = "nacionalidad")
     private String nacionalidad;
@@ -76,6 +76,12 @@ public class Hijos implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "municipio")
     private String municipio;
+    @Size(max = 2147483647)
+    @Column(name = "departamento")
+    private String departamento;
+    @Size(max = 2147483647)
+    @Column(name = "barrio")
+    private String barrio;
     @Column(name = "id_usuario")
     private Integer id_usuario;
     /*
@@ -121,11 +127,11 @@ public class Hijos implements Serializable {
         this.apellido = apellido;
     }
 
-    public Date getFechaNac() {
+    public String getFechaNac() {
         return fechaNac;
     }
 
-    public void setFechaNac(Date fechaNac) {
+    public void setFechaNac(String fechaNac) {
         this.fechaNac = fechaNac;
     }
 
@@ -137,11 +143,11 @@ public class Hijos implements Serializable {
         this.lugarNac = lugarNac;
     }
 
-    public Character getSexo() {
+    public String getSexo() {
         return sexo;
     }
 
-    public void setSexo(Character sexo) {
+    public void setSexo(String sexo) {
         this.sexo = sexo;
     }
 
@@ -168,6 +174,24 @@ public class Hijos implements Serializable {
     public void setMunicipio(String municipio) {
         this.municipio = municipio;
     }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
+    }
+
+    public String getBarrio() {
+        return barrio;
+    }
+
+    public void setBarrio(String barrio) {
+        this.barrio = barrio;
+    }
+    
+    
 
     /*@XmlTransient
     public Collection<Vacunas> getVacunasCollection() {

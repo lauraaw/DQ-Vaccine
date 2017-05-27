@@ -15,6 +15,7 @@ public class VacunasActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vacunas);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         VacunasFragment fragment = (VacunasFragment)
                 getSupportFragmentManager().findFragmentById(R.id.vacunas_container);

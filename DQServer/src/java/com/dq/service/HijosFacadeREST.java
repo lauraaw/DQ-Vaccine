@@ -62,27 +62,11 @@ public class HijosFacadeREST extends AbstractFacade<Hijos> {
 
     @GET
     @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public Hijos find(@PathParam("id") Integer id) {
         return super.find(id);
     }
     
-    @GET
-    @Path("/fecha/{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Date findFechaNac(@PathParam("id") Integer id) {
-        Hijos h;
-        try {
-            h = (Hijos) getEntityManager()
-                    .createQuery("SELECT h FROM Hijos h WHERE "
-                            + "h.idHijo = :id"
-                    ).setParameter("id", id).getSingleResult();
-        }
-        catch (NoResultException e) {
-            h = null;
-        }
-        return h.getFechaNac();
-    }
     
     @GET
     @Path("/hijos/{id}")

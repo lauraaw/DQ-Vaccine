@@ -1,10 +1,5 @@
 package com.dq.dqvaccine.clases;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-
-import com.dq.dqvaccine.data.DQContract.VacunasEntry;
-
 public class Vacuna {
     private int id;
     private String nombre_vac;
@@ -19,7 +14,7 @@ public class Vacuna {
     private String fecha_apl;
 
     public Vacuna(int id, String nombre_vac, int id_hijo, String edad, int dosis, String fecha,
-                  String lote, String responsable, int mes_aplicacion, int aplicado) {
+                  String lote, String responsable, int mes_aplicacion, int aplicado, String fecha_apl) {
         this.id = id;
         this.nombre_vac = nombre_vac;
         this.id_hijo = id_hijo;
@@ -30,34 +25,7 @@ public class Vacuna {
         this.responsable = responsable;
         this.mes_aplicacion = mes_aplicacion;
         this.aplicado = aplicado;
-    }
-
-    public Vacuna(Cursor cursor) {
-        id = cursor.getInt(cursor.getColumnIndex(VacunasEntry.ID));
-        nombre_vac = cursor.getString(cursor.getColumnIndex(VacunasEntry.NOMBRE_VAC));
-        id_hijo = cursor.getInt(cursor.getColumnIndex(VacunasEntry.ID_HIJO));
-        edad = cursor.getString(cursor.getColumnIndex(VacunasEntry.EDAD));
-        dosis = cursor.getInt(cursor.getColumnIndex(VacunasEntry.DOSIS));
-        fecha = cursor.getString(cursor.getColumnIndex(VacunasEntry.FECHA));
-        lote = cursor.getString(cursor.getColumnIndex(VacunasEntry.LOTE));
-        responsable = cursor.getString(cursor.getColumnIndex(VacunasEntry.RESPONSABLE));
-        mes_aplicacion = cursor.getInt(cursor.getColumnIndex(VacunasEntry.MES_APLICACION));
-        aplicado = cursor.getInt(cursor.getColumnIndex(VacunasEntry.APLICADO));
-    }
-
-    public ContentValues toContentValues() {
-        ContentValues values = new ContentValues();
-        values.put(VacunasEntry.ID, id);
-        values.put(VacunasEntry.NOMBRE_VAC, nombre_vac);
-        values.put(VacunasEntry.ID_HIJO, id_hijo);
-        values.put(VacunasEntry.EDAD, edad);
-        values.put(VacunasEntry.DOSIS, dosis);
-        values.put(VacunasEntry.FECHA, fecha);
-        values.put(VacunasEntry.LOTE, lote);
-        values.put(VacunasEntry.RESPONSABLE, responsable);
-        values.put(VacunasEntry.MES_APLICACION, mes_aplicacion);
-        values.put(VacunasEntry.APLICADO, aplicado);
-        return values;
+        this.fecha_apl = fecha_apl;
     }
 
     public int getId() {

@@ -7,8 +7,6 @@ import android.support.v7.widget.Toolbar;
 import com.dq.dqvaccine.MainActivity;
 import com.dq.dqvaccine.R;
 
-//TODO: Crear las notificaciones
-
 public class HijosActivity extends AppCompatActivity {
 
     public static final String EXTRA_HIJO_ID = "extra_hijo_id";
@@ -19,6 +17,7 @@ public class HijosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hijos);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         HijosFragment fragment = (HijosFragment)
                 getSupportFragmentManager().findFragmentById(R.id.hijos_container);

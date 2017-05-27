@@ -7,20 +7,8 @@ import android.provider.BaseColumns;
  */
 public class DQContract {
 
-    public static abstract class ResponsablesEntry implements BaseColumns{
-        public static final String TABLE_NAME ="responsables";
-
-        public static final String ID = "id";
-        public static final String CI = "ci";
-        public static final String NOMBRE = "nombre";
-        public static final String APELLIDO = "apellido";
-        public static final String CORREO = "correo";
-        public static final String FECHA_NAC = "fecha_nac";
-        public static final String LUGAR_NAC = "lugar_nac";
-    }
-
-    public static abstract class HijosEntry implements BaseColumns{
-        public static final String TABLE_NAME ="hijos";
+    public static abstract class HijosEntry{
+        public static final String TABLE_NAME ="Hijos";
 
         public static final String ID = "id";
         public static final String CI = "cedula";
@@ -34,12 +22,8 @@ public class DQContract {
         public static final String DEPARTAMENTO = "departamento";
         public static final String MUNICIPIO = "municipio";
         public static final String BARRIO = "barrio";
-        public static final String REFERENCIA = "referencia";
-        public static final String NOMBRE_RESPONSABLE = "nombre_responsable";
-        public static final String TEL = "tel";
-        public static final String SEGURO = "seguro";
-        public static final String ALERGIA = "alergia";
-        public static final String ID_RESP = "id_resp";
+        public static final String ID_USUARIO = "id_usuario";
+        public static String _ID;
     }
 
     public static abstract class VacunasEntry implements BaseColumns{

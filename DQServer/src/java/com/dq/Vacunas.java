@@ -54,9 +54,9 @@ public class Vacunas implements Serializable {
     private String edad;
     @Column(name = "dosis")
     private Integer dosis;
+    @Size(max = 2147483647)
     @Column(name = "fecha")
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
+    private String fecha;
     @Size(max = 2147483647)
     @Column(name = "lote")
     private String lote;
@@ -67,9 +67,9 @@ public class Vacunas implements Serializable {
     private Integer mesAplicacion;
     @Column(name = "aplicado")
     private Integer aplicado;
+    @Size(max = 2147483647)
     @Column(name = "fecha_apl")
-    @Temporal(TemporalType.DATE)
-    private Date fechaApl;
+    private String fechaApl;
    /* @JoinColumn(name = "id_hijo", referencedColumnName = "id_hijo", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Hijos hijos;*/
@@ -83,6 +83,10 @@ public class Vacunas implements Serializable {
 
     public Vacunas(int idVacuna, int idHijo) {
         this.vacunasPK = new VacunasPK(idVacuna, idHijo);
+    }
+    
+    public Vacunas(int mes){
+        this.mesAplicacion = mes;
     }
 
     public VacunasPK getVacunasPK() {
@@ -117,11 +121,11 @@ public class Vacunas implements Serializable {
         this.dosis = dosis;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
@@ -157,11 +161,11 @@ public class Vacunas implements Serializable {
         this.aplicado = aplicado;
     }
 
-    public Date getFechaApl() {
+    public String getFechaApl() {
         return fechaApl;
     }
 
-    public void setFechaApl(Date fechaApl) {
+    public void setFechaApl(String fechaApl) {
         this.fechaApl = fechaApl;
     }
 

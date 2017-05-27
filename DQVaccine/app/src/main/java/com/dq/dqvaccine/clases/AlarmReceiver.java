@@ -13,8 +13,6 @@ import com.dq.dqvaccine.R;
 import com.dq.dqvaccine.activities.HijosActivity;
 import com.dq.dqvaccine.activities.VacunasActivity;
 
-//TODO: cambiar texto de la notificacion
-
 public class AlarmReceiver extends BroadcastReceiver {
 
     @Override

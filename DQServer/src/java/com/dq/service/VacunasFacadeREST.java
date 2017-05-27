@@ -101,15 +101,15 @@ public class VacunasFacadeREST extends AbstractFacade<Vacunas> {
     }
     
     @GET
-    @Path("/vacunasmes/{idh}/{mes}")
+    @Path("/vacunasnoapl/{idh}/{apl}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Vacunas> findVacunasByMes(@PathParam("idh") int idh, @PathParam("mes") int mes) {
+    public List<Vacunas> findVacunasNoApl(@PathParam("idh") int idh, @PathParam("apl") int apl) {
         List<Vacunas> l;
         Query q = getEntityManager()
                     .createQuery("SELECT u FROM Vacunas u WHERE "
-                            + "u.vacunasPK.idHijo = :idh AND u.mesAplicacion = :mes")
+                            + "u.vacunasPK.idHijo = :idh AND u.aplicado = :apl")
                     .setParameter("idh", idh);
-        l = q.setParameter("mes", mes).getResultList();
+        l = q.setParameter("apl", apl).getResultList();
         return l;
     }
     

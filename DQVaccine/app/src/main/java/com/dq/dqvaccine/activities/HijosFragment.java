@@ -24,7 +24,6 @@ import com.dq.dqvaccine.clases.Hijo;
 import com.dq.dqvaccine.clases.HijosCursorAdapter;
 import com.dq.dqvaccine.clases.Notificacion;
 import com.dq.dqvaccine.data.DQContract.HijosEntry;
-import com.dq.dqvaccine.data.DQbdHelper;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -35,17 +34,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 
 
 public class HijosFragment extends Fragment {
 
-    private DQbdHelper mDQbdHelper;
-
     private ListView mHijosList;
     private HijosCursorAdapter mHijosAdapter;
     private int mUsuarioId;
+    private ArrayList<Hijo> hijos;
+
 
 
     public HijosFragment() {
@@ -97,7 +94,7 @@ public class HijosFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         if (!prefs.getBoolean("firstTime", false)) {
             // one time code
-            loadNotificaciones();
+            cargarNotificaciones();
 
             // mark first time has runned.
             SharedPreferences.Editor editor = prefs.edit();
@@ -108,69 +105,6 @@ public class HijosFragment extends Fragment {
         return root;
     }
 
-    //TODO: CAMBIAR PARA QUE SEA SOLO LOS HIJOS QUE CORRESPONDE
-    private void loadNotificaciones() {
-        Utiles util = new Utiles();
-        Cursor cursor = mDQbdHelper.getHijoById("1");
-        ArrayList<Integer> meses = getMesesNoAplicados("1");
-        cursor.moveToFirst();
-        Hijo hijo = new Hijo(cursor);
-        for (int i = 0; i < meses.size(); i++) {
-            String fecha = util.calcularFechaAAplicar(hijo.getFecha_nac(), meses.get(i));
-            new Notificacion(getActivity(),
-                    util.calcularNotificacion(fecha),
-                    hijo.getId(),
-                    hijo.getNombre() + " " + hijo.getApellido(),
-                    meses.get(i));
-        }
-        cursor.close();
-
-        cursor = mDQbdHelper.getHijoById("2");
-        meses = getMesesNoAplicados("2");
-        cursor.moveToFirst();
-        hijo = new Hijo(cursor);
-        for (int i = 0; i < meses.size(); i++) {
-            String fecha = util.calcularFechaAAplicar(hijo.getFecha_nac(), meses.get(i));
-            new Notificacion(getActivity(),
-                    util.calcularNotificacion(fecha),
-                    hijo.getId(),
-                    hijo.getNombre() + " " + hijo.getApellido(),
-                    meses.get(i));
-        }
-        cursor.close();
-
-        cursor = mDQbdHelper.getHijoById("3");
-        meses = getMesesNoAplicados("3");
-        cursor.moveToFirst();
-        hijo = new Hijo(cursor);
-        for (int i = 0; i < meses.size(); i++) {
-            String fecha = util.calcularFechaAAplicar(hijo.getFecha_nac(), meses.get(i));
-            new Notificacion(getActivity(),
-                    util.calcularNotificacion(fecha),
-                    hijo.getId(),
-                    hijo.getNombre() + " " + hijo.getApellido(),
-                    meses.get(i));
-        }
-        cursor.close();
-    }
-
-    private ArrayList<Integer> getMesesNoAplicados(String idHijo) {
-        Cursor cursor = mDQbdHelper.getNoAplicadas(idHijo);
-        ArrayList<Integer> lista = new ArrayList<>();
-        if (cursor.moveToFirst()) {
-            do {
-                lista.add(cursor.getInt(8));
-            } while (cursor.moveToNext());
-        }
-        HashSet<Integer> hs = new HashSet<Integer>(lista);
-        lista.clear();
-        lista.addAll(hs);
-
-        Collections.sort(lista);
-        return lista;
-    }
-
-
     private void showVacunasScreen(int currentHijoId) {
         Intent intent = new Intent(getActivity(), VacunasActivity.class);
         intent.putExtra(HijosActivity.EXTRA_HIJO_ID, currentHijoId);
@@ -178,13 +112,17 @@ public class HijosFragment extends Fragment {
     }
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    }
+
     private void loadHijos() {
+        hijos = new ArrayList<>();
         new HijosLoadTask().execute();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+    private void cargarNotificaciones() {
+        new MesesNoAplicados().execute();
     }
 
     private class HijosLoadTask extends AsyncTask<Void, Void, Wrapper> {
@@ -202,7 +140,8 @@ public class HijosFragment extends Fragment {
 
             boolean resul = true;
 
-            MatrixCursor mc = new MatrixCursor(new String[] {"_id", HijosEntry.NOMBRE, HijosEntry.APELLIDO});
+            MatrixCursor mc = new MatrixCursor(new String[] {"_id", HijosEntry.NOMBRE, HijosEntry.APELLIDO,
+            HijosEntry.FECHA_NAC});
 
             HttpClient httpClient = new DefaultHttpClient();
 
@@ -223,7 +162,9 @@ public class HijosFragment extends Fragment {
                         int id = jObject.getInt("idHijo");
                         String nombre = jObject.getString("nombre");
                         String apellido = jObject.getString("apellido");
-                        mc.addRow(new Object[] {id, nombre, apellido});
+                        String fecha_nac = jObject.getString("fechaNac");
+                        mc.addRow(new Object[] {id, nombre, apellido, fecha_nac});
+                        hijos.add(new Hijo(id, nombre, apellido, fecha_nac));
                     }
                 }
                 else {
@@ -245,6 +186,7 @@ public class HijosFragment extends Fragment {
             if (w.result) {
                 if (w.cursor != null && w.cursor.getCount() > 0) {
                     mHijosAdapter.swapCursor(w.cursor);
+
                 } else if (w.cursor.isAfterLast()){
                     w.cursor.close();
                 }
@@ -269,6 +211,68 @@ public class HijosFragment extends Fragment {
     {
         public Boolean result;
         public Cursor cursor;
+    }
+
+
+    private class MesesNoAplicados extends AsyncTask<Void, Void, Boolean> {
+
+
+
+        protected Boolean doInBackground(Void... params) {
+
+            int mes;
+            String fecha_apl;
+            ArrayList<Integer> meses;
+            ArrayList<String> fechas;
+            Utiles util = new Utiles();
+            HttpClient httpClient;
+            HttpGet del;
+
+            for (Hijo hijo: hijos
+                 ) {
+
+                meses = new ArrayList<>();
+                fechas = new ArrayList<>();
+                httpClient = new DefaultHttpClient();
+
+                del =
+                        new HttpGet("http://10.30.30.16:8084/DQ/webresources/com.dq.vacunas/vacunasnoapl/" + hijo.getId() + "/0");
+
+                del.setHeader("content-type", "application/json");
+
+
+                try {
+                    HttpResponse resp = httpClient.execute(del);
+                    String respStr = EntityUtils.toString(resp.getEntity());
+
+                    JSONArray jArray = new JSONArray(respStr);
+                    if (jArray != null) {
+                        for (int i = 0; i < jArray.length(); i++) {
+                            JSONObject jObject = jArray.getJSONObject(i);
+                            mes = jObject.getInt("mesAplicacion");
+                            fecha_apl = jObject.getString("fechaApl");
+                            if (!meses.contains(mes)){
+                                meses.add(mes);
+                                fechas.add(fecha_apl);
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    Log.e("ServicioRest", "Error!", ex);
+                }
+
+                for (int i = 0 ; i < meses.size() ; i++) {
+                    new Notificacion(getActivity(),
+                            util.calcularNotificacion(fechas.get(i)),
+                            hijo.getId(),
+                            hijo.getNombre() + " " + hijo.getApellido(),
+                            meses.get(i));
+                }
+
+            }
+            return true;
+        }
+
     }
 
 }
