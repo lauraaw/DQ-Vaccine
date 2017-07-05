@@ -25,7 +25,8 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
@@ -237,13 +238,19 @@ public class MainActivity extends AppCompatActivity implements
             HttpClient httpClient = new DefaultHttpClient();
 
             //Servicio rest
-            HttpGet del =
-                    new HttpGet("http://10.30.30.16:8084/DQ/webresources/com.dq.usuarios/mail/" + correo);
+            HttpPost post =
+                    new HttpPost(Utiles.Path.correoPath);
 
-            del.setHeader("content-type", "application/json");
+
+            post.setHeader("content-type", "application/json");
+
 
             try {
-                HttpResponse resp = httpClient.execute(del);
+                JSONObject parm = new JSONObject();
+                parm.put("correo", correo);
+                StringEntity entity = new StringEntity(parm.toString());
+                post.setEntity(entity);
+                HttpResponse resp = httpClient.execute(post);
                 String respStr = EntityUtils.toString(resp.getEntity());
 
                 //Se obtiene el JSON del usuario
@@ -282,7 +289,6 @@ public class MainActivity extends AppCompatActivity implements
                 alertDialog.show();
             }
         }
-
 
     }
 }

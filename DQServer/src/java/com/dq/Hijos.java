@@ -83,7 +83,7 @@ public class Hijos implements Serializable {
     @Column(name = "barrio")
     private String barrio;
     @Column(name = "id_usuario")
-    private Integer id_usuario;
+    private Integer idUsuario;
     /*
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hijos")
     private Collection<Vacunas> vacunasCollection;
@@ -202,12 +202,12 @@ public class Hijos implements Serializable {
         this.vacunasCollection = vacunasCollection;
     }*/
 
-    public Integer getId_usuario() {
-        return id_usuario;
+    public Integer getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId_usuario(Integer id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setIdUsuario(Integer id_usuario) {
+        this.idUsuario = id_usuario;
     }
     
     

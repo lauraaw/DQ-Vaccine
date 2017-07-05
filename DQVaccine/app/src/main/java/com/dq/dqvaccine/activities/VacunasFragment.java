@@ -13,12 +13,14 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import com.dq.dqvaccine.R;
+import com.dq.dqvaccine.Utiles;
 import com.dq.dqvaccine.clases.ExpandableListAdapter;
 import com.dq.dqvaccine.clases.Vacuna;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
@@ -127,10 +129,15 @@ public class VacunasFragment extends Fragment {
             listDataHeader.add("Dieciocho meses");
             listDataHeader.add("Cuarenta y ocho meses");
             try {
-                HttpGet del =
-                        new HttpGet("http://10.30.30.16:8084/DQ/webresources/com.dq.vacunas/vacunas/" + mHijoId);
+                HttpPost post = new HttpPost(Utiles.Path.vacunasPath);
 
-                resp = httpClient.execute(del);
+                post.setHeader("content-type", "application/json");
+                JSONObject parm = new JSONObject();
+                parm.put("idHijo", mHijoId);
+                StringEntity entity = new StringEntity(parm.toString());
+                post.setEntity(entity);
+
+                resp = httpClient.execute(post);
                 respStr = EntityUtils.toString(resp.getEntity());
 
                 listDataChild.put(listDataHeader.get(0), recorrer(respStr, 0));

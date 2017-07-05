@@ -6,6 +6,7 @@
 package com.dq.service;
 
 import com.dq.Usuarios;
+import com.google.gson.Gson;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -42,6 +43,24 @@ public class UsuariosFacadeREST extends AbstractFacade<Usuarios> {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Usuarios entity) {
         super.create(entity);
+    }
+    
+    @POST
+    @Path("/correo")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Usuarios correo(String jsonMail) {
+        Gson obj = new Gson();
+        Usuarios u = obj.fromJson(jsonMail, Usuarios.class);
+        try {
+            u = (Usuarios) getEntityManager()
+                    .createQuery("SELECT u FROM Usuarios u WHERE u.correo = :correo")
+                    .setParameter("correo", u.getCorreo()).getSingleResult();
+        }
+        catch (NoResultException e) {
+            u = null;
+        }
+        return u;
     }
 
     @PUT

@@ -5,8 +5,10 @@
  */
 package com.dq.service;
 
+import com.dq.Hijos;
 import com.dq.Vacunas;
 import com.dq.VacunasPK;
+import com.google.gson.Gson;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -65,6 +67,36 @@ public class VacunasFacadeREST extends AbstractFacade<Vacunas> {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Vacunas entity) {
         super.create(entity);
+    }
+    
+    @POST
+    @Path("/vacunas")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Vacunas> vacunas(String jsonID) {
+        Gson obj = new Gson();
+        Hijos h = obj.fromJson(jsonID, Hijos.class);
+        List<Vacunas> l;
+        l = getEntityManager()
+                    .createQuery("SELECT u FROM Vacunas u WHERE u.vacunasPK.idHijo = :idh")
+                    .setParameter("idh", h.getIdHijo()).getResultList();
+        return l;
+    }
+    
+    @POST
+    @Path("/vacunasnoapl")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Vacunas> vacunasnoapl(String json) {
+        Gson obj = new Gson();
+        Vacunas v = obj.fromJson(json, Vacunas.class);
+        List<Vacunas> l;
+        Query q = getEntityManager()
+                    .createQuery("SELECT u FROM Vacunas u WHERE "
+                            + "u.vacunasPK.idHijo = :idh AND u.aplicado = :apl")
+                    .setParameter("idh", v.getVacunasPK().getIdHijo());
+        l = q.setParameter("apl", v.getAplicado()).getResultList();
+        return l;
     }
 
     @PUT

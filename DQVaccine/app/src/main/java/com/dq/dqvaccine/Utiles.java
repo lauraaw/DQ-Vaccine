@@ -68,4 +68,17 @@ public class Utiles {
         Date hoy = new Date();
         return fecha.before(hoy);
     }
+
+    public abstract class Path{
+
+        public static final String ip = "10.30.30.25";
+        public static final String correoPath = "http://" + ip + ":8084/DQ/webresources/com.dq.usuarios/correo";
+        public static final String hijosPath = "http://" + ip + ":8084/DQ/webresources/com.dq.hijos/hijos";
+        public static final String hijoPath = "http://" + ip + ":8084/DQ/webresources/com.dq.hijos/hijo";
+        public static final String vacunasPath = "http://" + ip + ":8084/DQ/webresources/com.dq.vacunas/vacunas";
+        public static final String vacunasnoPath = "http://" + ip + ":8084/DQ/webresources/com.dq.vacunas/vacunasnoapl";
+
+    }
+
 }
+

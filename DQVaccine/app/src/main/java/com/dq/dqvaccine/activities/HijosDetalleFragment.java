@@ -19,12 +19,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.dq.dqvaccine.R;
+import com.dq.dqvaccine.Utiles;
 import com.dq.dqvaccine.clases.Hijo;
 import com.dq.dqvaccine.data.DQContract;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
@@ -146,14 +148,17 @@ public class HijosDetalleFragment extends Fragment {
 
             HttpClient httpClient = new DefaultHttpClient();
 
-            HttpGet del =
-                    new HttpGet("http://10.30.30.16:8084/DQ/webresources/com.dq.hijos/" + mHijoId);
+            HttpPost post = new HttpPost(Utiles.Path.hijoPath);
 
-            del.setHeader("content-type", "application/json");
+            post.setHeader("content-type", "application/json");
 
 
             try {
-                HttpResponse resp = httpClient.execute(del);
+                JSONObject parm = new JSONObject();
+                parm.put("idHijo", mHijoId);
+                StringEntity entity = new StringEntity(parm.toString());
+                post.setEntity(entity);
+                HttpResponse resp = httpClient.execute(post);
                 String respStr = EntityUtils.toString(resp.getEntity());
                 String nombre, apellido, fecha_nac, sexo, lugar_nac, nacionalidad, departamento,
                         municipio, barrio, direccion;
@@ -172,7 +177,7 @@ public class HijosDetalleFragment extends Fragment {
                 municipio = jObject.getString("municipio");
                 barrio = jObject.getString("barrio");
                 direccion = jObject.getString("direccion");
-                id_usuario = jObject.getInt("id_usuario");
+                id_usuario = jObject.getInt("idUsuario");
                 mc.addRow(new Object[] {id, nombre, apellido, ci, fecha_nac, sexo, lugar_nac,
                 nacionalidad, departamento, municipio, barrio, direccion, id_usuario});
             } catch (Exception ex) {

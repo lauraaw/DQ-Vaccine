@@ -28,6 +28,8 @@ import com.dq.dqvaccine.data.DQContract.HijosEntry;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
@@ -145,14 +147,17 @@ public class HijosFragment extends Fragment {
 
             HttpClient httpClient = new DefaultHttpClient();
 
-            HttpGet del =
-                    new HttpGet("http://10.30.30.16:8084/DQ/webresources/com.dq.hijos/hijos/" + mUsuarioId);
+            HttpPost post = new HttpPost(Utiles.Path.hijosPath);
 
-            del.setHeader("content-type", "application/json");
+            post.setHeader("content-type", "application/json");
 
 
             try {
-                HttpResponse resp = httpClient.execute(del);
+                JSONObject parm = new JSONObject();
+                parm.put("id", mUsuarioId);
+                StringEntity entity = new StringEntity(parm.toString());
+                post.setEntity(entity);
+                HttpResponse resp = httpClient.execute(post);
                 String respStr = EntityUtils.toString(resp.getEntity());
 
                 JSONArray jArray = new JSONArray(respStr);

@@ -6,6 +6,9 @@
 package com.dq.service;
 
 import com.dq.Hijos;
+import com.dq.Usuarios;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +48,38 @@ public class HijosFacadeREST extends AbstractFacade<Hijos> {
     public void create(Hijos entity) {
         super.create(entity);
     }
+    
+    @POST
+    @Path("/hijos")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Hijos> hijos(String jsonID) {
+        Gson obj = new Gson();
+        Usuarios u = obj.fromJson(jsonID, Usuarios.class);
+        List<Hijos> l;
+        l = getEntityManager()
+                    .createQuery("SELECT u FROM Hijos u WHERE u.idUsuario = :id")
+                    .setParameter("id", u.getId()).getResultList();
+        return l;
+    }
+    
+    @POST
+    @Path("/hijo")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Hijos hijo(String jsonID) {
+        Gson obj = new Gson();
+        Hijos h = obj.fromJson(jsonID, Hijos.class);
+        try {
+            h = (Hijos) getEntityManager()
+                        .createQuery("SELECT u FROM Hijos u WHERE u.idHijo = :id")
+                        .setParameter("id", h.getIdHijo()).getSingleResult();
+            }
+        catch (NoResultException e) {
+            h = null;
+        }
+        return h;
+    }
 
     @PUT
     @Path("{id}")
@@ -67,11 +102,10 @@ public class HijosFacadeREST extends AbstractFacade<Hijos> {
         return super.find(id);
     }
     
-    
     @GET
-    @Path("/hijos/{id}")
+    @Path("/hijoss/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Hijos> findCorreo(@PathParam("id") int id) {
+    public List<Hijos> findHijos(@PathParam("id") int id) {
         List<Hijos> l;
         l = getEntityManager()
                     .createQuery("SELECT u FROM Hijos u WHERE u.id_usuario = :id")
