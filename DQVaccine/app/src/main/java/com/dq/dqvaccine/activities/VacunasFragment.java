@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,6 +64,14 @@ public class VacunasFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_vacunas, container, false);
         mVacunasList = (ExpandableListView) root.findViewById(R.id.lvExp);
         preparar();
+
+        FloatingActionButton fab = (FloatingActionButton) root.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                preparar();
+            }
+        });
 
         return root;
     }
