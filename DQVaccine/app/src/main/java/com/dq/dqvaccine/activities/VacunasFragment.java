@@ -55,6 +55,7 @@ public class VacunasFragment extends Fragment {
         return fragment;
     }
 
+    //Crea la lista expandible
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,6 +66,7 @@ public class VacunasFragment extends Fragment {
         return root;
     }
 
+    //ID del hijo
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +79,7 @@ public class VacunasFragment extends Fragment {
 
     }
 
+    //Al hacer clic en el boton de info de hijo
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_info:
@@ -86,11 +89,13 @@ public class VacunasFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    //Cambia de intent y pasa a la actividad de hijos detalle
     private void showHijosScreen(int currentHijoId) {
         Intent intent = new Intent(getActivity(), HijosDetalleActivity.class);
         intent.putExtra(HijosActivity.EXTRA_HIJO_ID, currentHijoId);
         startActivityForResult(intent, 1);
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -173,8 +178,9 @@ public class VacunasFragment extends Fragment {
         JSONObject jObject;
         JSONArray jArray = null;
         ArrayList<Vacuna> mArrayList = new ArrayList<Vacuna>();
-        int idHijo, id, dosis, mes, aplicado;
+        int idHijo, id, dosis, mes, aplicado, vencido;
         String nombre, edad, fecha_apl, lote, responsable, fecha;
+        Utiles u = new Utiles();
         try {
             jArray = new JSONArray(json);
             if (jArray != null) {
@@ -216,7 +222,15 @@ public class VacunasFragment extends Fragment {
                         aplicado = jObject.getInt("aplicado");
                         fecha_apl = jObject.getString("fechaApl");
 
-                        Vacuna v = new Vacuna(id, nombre, idHijo, edad, dosis, fecha, lote, responsable, mes, aplicado, fecha_apl);
+                        if (u.vencido(fecha_apl)) {
+                            vencido = 1;
+                        }
+                        else {
+                            vencido = 0;
+                        }
+
+                        Vacuna v = new Vacuna(id, nombre, idHijo, edad, dosis, fecha, lote,
+                                responsable, mes, aplicado, fecha_apl, vencido);
 
                         mArrayList.add(v);
                     }

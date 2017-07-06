@@ -40,7 +40,7 @@ public class Utiles {
         return dt;
     }
 
-    public boolean vencido(String dt, int meses){
+    public boolean vencido(String dt){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Calendar c = Calendar.getInstance();
         try {
@@ -48,22 +48,7 @@ public class Utiles {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        switch (meses) {
-            case 2:
-                c.add(Calendar.MONTH, 2);
-            case 4:
-                c.add(Calendar.MONTH, 2);
-            case 6:
-                c.add(Calendar.MONTH, 6);
-            case 12:
-                c.add(Calendar.MONTH, 3);
-            case 15:
-                c.add(Calendar.MONTH, 3);
-            case 18:
-                c.add(Calendar.MONTH, 30);
-            case 48:
-                c.add(Calendar.MONTH, 12);
-        }
+        c.add(Calendar.MONTH, 1);
         Date fecha = c.getTime();
         Date hoy = new Date();
         return fecha.before(hoy);

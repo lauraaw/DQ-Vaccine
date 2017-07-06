@@ -231,7 +231,8 @@ public class HijosFragment extends Fragment {
             ArrayList<String> fechas;
             Utiles util = new Utiles();
             HttpClient httpClient;
-            HttpGet del;
+            HttpPost post;
+            String parm;
 
             for (Hijo hijo: hijos
                  ) {
@@ -240,14 +241,15 @@ public class HijosFragment extends Fragment {
                 fechas = new ArrayList<>();
                 httpClient = new DefaultHttpClient();
 
-                del =
-                        new HttpGet("http://10.30.30.16:8084/DQ/webresources/com.dq.vacunas/vacunasnoapl/" + hijo.getId() + "/0");
-
-                del.setHeader("content-type", "application/json");
-
 
                 try {
-                    HttpResponse resp = httpClient.execute(del);
+                    post = new HttpPost(Utiles.Path.vacunasnoPath);
+                    parm = "{'vacunasPK':{'idHijo':" + hijo.getId() + "}, 'aplicado': 0}";
+                    StringEntity entity = new StringEntity(parm);
+                    post.setEntity(entity);
+
+                    post.setHeader("content-type", "application/json");
+                    HttpResponse resp = httpClient.execute(post);
                     String respStr = EntityUtils.toString(resp.getEntity());
 
                     JSONArray jArray = new JSONArray(respStr);

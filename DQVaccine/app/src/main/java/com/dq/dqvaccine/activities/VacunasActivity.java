@@ -12,6 +12,9 @@ public class VacunasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        int id = getIntent().getIntExtra(HijosActivity.EXTRA_HIJO_ID, 0);
+
         setContentView(R.layout.activity_vacunas);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -19,8 +22,6 @@ public class VacunasActivity extends AppCompatActivity {
 
         VacunasFragment fragment = (VacunasFragment)
                 getSupportFragmentManager().findFragmentById(R.id.vacunas_container);
-
-        int id = getIntent().getIntExtra(HijosActivity.EXTRA_HIJO_ID, 0);
 
         if (fragment == null) {
             fragment = VacunasFragment.newInstance(id);

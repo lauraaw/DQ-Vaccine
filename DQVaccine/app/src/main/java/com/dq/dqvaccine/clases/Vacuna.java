@@ -12,9 +12,11 @@ public class Vacuna {
     private int mes_aplicacion;
     private int aplicado;
     private String fecha_apl;
+    private int vencido;
 
     public Vacuna(int id, String nombre_vac, int id_hijo, String edad, int dosis, String fecha,
-                  String lote, String responsable, int mes_aplicacion, int aplicado, String fecha_apl) {
+                  String lote, String responsable, int mes_aplicacion, int aplicado, String fecha_apl,
+                  int vencido) {
         this.id = id;
         this.nombre_vac = nombre_vac;
         this.id_hijo = id_hijo;
@@ -26,6 +28,7 @@ public class Vacuna {
         this.mes_aplicacion = mes_aplicacion;
         this.aplicado = aplicado;
         this.fecha_apl = fecha_apl;
+        this.vencido = vencido;
     }
 
     public int getId() {
@@ -71,4 +74,8 @@ public class Vacuna {
     public String getFecha_apl() { return fecha_apl;}
 
     public int getAplicado() { return  aplicado;}
+
+    public int getVencido() { return vencido; }
+
+    public void setVencido(int vencido) { this.vencido = vencido; }
 }

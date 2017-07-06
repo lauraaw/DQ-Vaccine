@@ -85,7 +85,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if(vacuna.getAplicado() == 1) {
             imgListChild.setImageResource(R.drawable.check_ok);
         }
-        else if (ut.vencido(vacuna.getFecha_apl(), vacuna.getMes_aplicacion())){
+        else if (ut.vencido(vacuna.getFecha_apl())){
             imgListChild.setImageResource(R.drawable.no_check);
         }
         // imgListChild.setImageResource(R.drawable.no_check);}
