@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.dq.dqvaccine.activities.VacunasFragment">
@@ -11,15 +12,65 @@
         android:layout_width="match_parent"
         android:divider="@null"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/menu_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/margenes_fab"
-        app:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/filter"
-        android:tint="@android:color/white"
-        />
+        android:layout_marginBottom="@dimen/margenes_fab"
+        fab:fab_addButtonColorNormal="?attr/colorPrimary"
+        fab:fab_addButtonSize="normal"
+        fab:fab_labelsPosition="left"
+        fab:fab_labelStyle="@style/menu_labels_style">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/accion_todas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@android:color/white"
+            fab:fab_icon="@drawable/filter"
+            fab:fab_size="mini"
+            fab:fab_title="Todas"
+            />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/accion_aplicadas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@android:color/white"
+            fab:fab_icon="@drawable/check_ok"
+            fab:fab_size="mini"
+            fab:fab_title="Aplicadas" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/accion_vencidas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@android:color/white"
+            fab:fab_icon="@drawable/no_check"
+            fab:fab_size="mini"
+            fab:fab_title="Vencidas" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/accion_pendientes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@android:color/white"
+            fab:fab_icon="@drawable/no_yet_orange"
+            fab:fab_size="mini"
+            fab:fab_title="Pendientes" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/accion_proximas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@android:color/white"
+            fab:fab_icon="@drawable/no_yet_check"
+            fab:fab_size="mini"
+            fab:fab_title="Próximas" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
 
 </FrameLayout>

@@ -13,11 +13,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import com.dq.dqvaccine.R;
 import com.dq.dqvaccine.Utiles;
 import com.dq.dqvaccine.clases.ExpandableListAdapter;
 import com.dq.dqvaccine.clases.Vacuna;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -29,8 +31,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class VacunasFragment extends Fragment {
 
@@ -42,6 +46,8 @@ public class VacunasFragment extends Fragment {
 
     List<String> listDataHeader;
     HashMap<String, List<Vacuna>> listDataChild;
+
+    Utiles u = new Utiles();
 
 
     public VacunasFragment() {
@@ -65,15 +71,133 @@ public class VacunasFragment extends Fragment {
         mVacunasList = (ExpandableListView) root.findViewById(R.id.lvExp);
         preparar();
 
-        FloatingActionButton fab = (FloatingActionButton) root.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) root.findViewById(R.id.menu_fab);
+
+        com.getbase.floatingactionbutton.FloatingActionButton todas =
+                (com.getbase.floatingactionbutton.FloatingActionButton) root.findViewById(R.id.accion_todas);
+        todas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                preparar();
+                completo();
+                menuMultipleActions.collapse();
+            }
+        });
+
+        com.getbase.floatingactionbutton.FloatingActionButton vencidas =
+                (com.getbase.floatingactionbutton.FloatingActionButton) root.findViewById(R.id.accion_vencidas);
+        vencidas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vencido();
+                menuMultipleActions.collapse();
+            }
+        });
+
+        com.getbase.floatingactionbutton.FloatingActionButton aplicadas =
+                (com.getbase.floatingactionbutton.FloatingActionButton) root.findViewById(R.id.accion_aplicadas);
+        aplicadas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                aplicado();
+                menuMultipleActions.collapse();
+            }
+        });
+
+        com.getbase.floatingactionbutton.FloatingActionButton tiempo =
+                (com.getbase.floatingactionbutton.FloatingActionButton) root.findViewById(R.id.accion_pendientes);
+        tiempo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pendiente();
+                menuMultipleActions.collapse();
+            }
+        });
+
+        final com.getbase.floatingactionbutton.FloatingActionButton proximas =
+                (com.getbase.floatingactionbutton.FloatingActionButton) root.findViewById(R.id.accion_proximas);
+        proximas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                proximas();
+                menuMultipleActions.collapse();
             }
         });
 
         return root;
+    }
+
+    private void proximas() {
+        HashMap<String, List<Vacuna>> Child = new HashMap<String, List<Vacuna>>();;
+        for (Map.Entry<String, List<Vacuna>> entry : listDataChild.entrySet()) {
+            String key = entry.getKey();
+            List<Vacuna> value = entry.getValue();
+            List<Vacuna> vacunas = new ArrayList<>();
+            for(Vacuna v : value){
+                if (u.enTiempo(v.getFecha_apl()) != true && v.getVencido() != 1 && v.getAplicado() != 1) {
+                    vacunas.add(v);
+                }
+            }
+            Child.put(key, vacunas);
+        }
+        mVacunasAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, Child);
+        mVacunasList.setAdapter(mVacunasAdapter);
+    }
+
+    private void pendiente() {
+        HashMap<String, List<Vacuna>> Child = new HashMap<String, List<Vacuna>>();;
+        for (Map.Entry<String, List<Vacuna>> entry : listDataChild.entrySet()) {
+            String key = entry.getKey();
+            List<Vacuna> value = entry.getValue();
+            List<Vacuna> vacunas = new ArrayList<>();
+            for(Vacuna v : value){
+                if (u.enTiempo(v.getFecha_apl()) && v.getVencido() != 1) {
+                    vacunas.add(v);
+                }
+            }
+            Child.put(key, vacunas);
+        }
+        mVacunasAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, Child);
+        mVacunasList.setAdapter(mVacunasAdapter);
+    }
+
+
+    private void aplicado() {
+        HashMap<String, List<Vacuna>> Child = new HashMap<String, List<Vacuna>>();;
+        for (Map.Entry<String, List<Vacuna>> entry : listDataChild.entrySet()) {
+            String key = entry.getKey();
+            List<Vacuna> value = entry.getValue();
+            List<Vacuna> vacunas = new ArrayList<>();
+            for(Vacuna v : value){
+                if (v.getAplicado() == 1) {
+                    vacunas.add(v);
+                }
+            }
+            Child.put(key, vacunas);
+        }
+        mVacunasAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, Child);
+        mVacunasList.setAdapter(mVacunasAdapter);
+    }
+
+    private void vencido() {
+        HashMap<String, List<Vacuna>> Child = new HashMap<String, List<Vacuna>>();;
+        for (Map.Entry<String, List<Vacuna>> entry : listDataChild.entrySet()) {
+            String key = entry.getKey();
+            List<Vacuna> value = entry.getValue();
+            List<Vacuna> vacunas = new ArrayList<>();
+            for(Vacuna v : value){
+                if (v.getVencido() == 1) {
+                    vacunas.add(v);
+                }
+            }
+            Child.put(key, vacunas);
+        }
+        mVacunasAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, Child);
+        mVacunasList.setAdapter(mVacunasAdapter);
+    }
+
+    private void completo() {
+        mVacunasAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+        mVacunasList.setAdapter(mVacunasAdapter);
     }
 
     //ID del hijo
@@ -190,7 +314,6 @@ public class VacunasFragment extends Fragment {
         ArrayList<Vacuna> mArrayList = new ArrayList<Vacuna>();
         int idHijo, id, dosis, mes, aplicado, vencido;
         String nombre, edad, fecha_apl, lote, responsable, fecha;
-        Utiles u = new Utiles();
         try {
             jArray = new JSONArray(json);
             if (jArray != null) {
