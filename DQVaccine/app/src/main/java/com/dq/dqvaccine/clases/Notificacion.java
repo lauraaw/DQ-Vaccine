@@ -15,8 +15,9 @@ import java.util.Calendar;
 import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static android.content.Context.ALARM_SERVICE;
 
+//Clase que instancia las notificaciones
 public class Notificacion {
-
+    //Recibe como paremetro la fecha, el id del hijo, nombre y mes
     public Notificacion(Context contexto, String dt, int hijoId, String nombre, int mes) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

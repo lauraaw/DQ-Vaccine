@@ -18,8 +18,8 @@ import com.dq.dqvaccine.Utiles;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context _context;
-    private List<String> _listDataHeader; // header titles
-    // child data in format of header title, child title
+    private List<String> _listDataHeader; // titulos de las cabeceras
+    // hashmaps de los titulos de la cabecera y lista de vacunas
     private HashMap<String, List<Vacuna>> _listDataChild;
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader,

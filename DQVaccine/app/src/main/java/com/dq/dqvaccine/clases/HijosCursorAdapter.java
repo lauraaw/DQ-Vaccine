@@ -38,7 +38,7 @@ public class HijosCursorAdapter extends CursorAdapter{
         TextView nameText = (TextView) view.findViewById(R.id.tv_name);
         final ImageView avatarImage = (ImageView) view.findViewById(R.id.iv_avatar);
 
-        // Get valores..
+        // Se coloca el nombre y apellido del hijo
         String name = cursor.getString(cursor.getColumnIndex(HijosEntry.NOMBRE))
                 + " " + cursor.getString(cursor.getColumnIndex(HijosEntry.APELLIDO));
         String avatarUri = ""; //No tenemos en la bd
@@ -49,7 +49,7 @@ public class HijosCursorAdapter extends CursorAdapter{
                 .with(context)
                 .load(Uri.parse("file:///android_asset/" + avatarUri))
                 .asBitmap()
-                .error(R.drawable.ic_account_circle)
+                .error(R.drawable.ic_account_circle) //Por defecto se asigna esta imagen
                 .centerCrop()
                 .into(new BitmapImageViewTarget(avatarImage) {
                     @Override

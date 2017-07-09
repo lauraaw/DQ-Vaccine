@@ -12,7 +12,7 @@ import android.support.v4.app.TaskStackBuilder;
 import com.dq.dqvaccine.R;
 import com.dq.dqvaccine.activities.HijosActivity;
 import com.dq.dqvaccine.activities.VacunasActivity;
-
+//Clase que construye la alarma para la notificacion
 public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
