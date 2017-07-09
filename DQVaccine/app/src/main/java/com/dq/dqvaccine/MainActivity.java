@@ -31,7 +31,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.apache.http.client.*;
-
+//Actividad principal donde se inicia la sesion del usuario con la cuenta de google y se confirma
+// existencia en la base de datos.
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
@@ -217,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    // Verifica la existencia del usuario en la base de datos mediante el servicio Rest
     private class Verificar extends AsyncTask<Void, Void, Boolean> {
 
         //Datos de los usuarios que se obtendran de la bd
@@ -245,6 +247,7 @@ public class MainActivity extends AppCompatActivity implements
             post.setHeader("content-type", "application/json");
 
 
+            //Se obtiene el JSON del usuario enviando como parametro un json con el correo
             try {
                 JSONObject parm = new JSONObject();
                 parm.put("correo", correo);
@@ -253,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements
                 HttpResponse resp = httpClient.execute(post);
                 String respStr = EntityUtils.toString(resp.getEntity());
 
-                //Se obtiene el JSON del usuario
+
                 JSONObject respJSON = new JSONObject(respStr);
 
                 idUsu = respJSON.getInt("id");

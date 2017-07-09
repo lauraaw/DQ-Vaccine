@@ -14,6 +14,8 @@ public class Utiles {
 
     }
 
+    //Verifica si la vacuna esta en tiempo de ser aplicada.
+    // Se envia como parametro la fecha a aplicar de la vacuna
     public boolean enTiempo(String dt) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date fecha = new Date();
@@ -26,6 +28,8 @@ public class Utiles {
         return fecha.before(hoy);
     }
 
+    //Calcula el tiempo en que sera programada la notificacion dos dias antes de la fecha de la
+    // aplicacion de la vacuna
     public String calcularNotificacion(String dt) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Calendar c = Calendar.getInstance();
@@ -35,11 +39,12 @@ public class Utiles {
             e.printStackTrace();
         }
         c.add(Calendar.DAY_OF_YEAR, -2);
-        dt = sdf.format(c.getTime(  ));  // dt is now the new date
+        dt = sdf.format(c.getTime(  ));
         System.out.println(dt);
         return dt;
     }
 
+    //Calcula si la aplicacion de la vacuna ya exedio el plazo de vencimiento
     public boolean vencido(String dt){
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Calendar c = Calendar.getInstance();
@@ -53,7 +58,7 @@ public class Utiles {
         Date hoy = new Date();
         return fecha.before(hoy);
     }
-
+    //Path de los recursos del servicio Rest
     public abstract class Path{
 
         public static final String ip = "10.30.30.16";
